@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriGuard | Smart Farming Platform</title>
+<meta name="description" content="Crop disease check, soil check, yield and profit calculators, and market prices — all in one place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =====================================================
+   AgriGuard — shared stylesheet
+   Palette: deep field-green + harvest gold on warm paper
+   Type: Baloo 2 (display) + Hind (body) — both set Devanagari well
+   ===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Hind:wght@400;500;600;700&display=swap');
+
+:root{
+    --paper:        #FAF7EE;
+    --paper-alt:     #F1EADA;
+    --ink:          #22301E;
+    --ink-soft:     #5B6B54;
+    --ink-faint:    #8B9382;
+    --line:         #E1D8C2;
+
+    --green-deep:   #23472A;
+    --green:        #3B7A3F;
+    --green-bright: #59A05A;
+    --green-wash:   #EAF2E3;
+
+    --gold:         #C98A2C;
+    --gold-deep:    #9C6414;
+    --gold-wash:    #FBF0DA;
+
+    --clay:         #B5502E;
+    --sky:          #2E6E8E;
+
+    --warn-bg:      #FCF0D8;
+    --warn-border:  #E3B34B;
+    --bad-bg:       #FBE6E1;
+    --bad-border:   #D97757;
+
+    --radius-s: 8px;
+    --radius-m: 14px;
+    --radius-l: 22px;
+    --shadow: 0 6px 20px rgba(34,48,30,.08);
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+
+body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Hind', 'Noto Sans Devanagari', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,h2,h3,h4{
+    font-family: 'Baloo 2', 'Hind', sans-serif;
+    font-weight: 700;
+    color: var(--green-deep);
+    margin: 0 0 .5em;
+    line-height: 1.25;
+}
+h1{ font-size: clamp(28px, 4vw, 42px); }
+h2{ font-size: clamp(22px, 3vw, 30px); }
+h3{ font-size: 19px; }
+p{ margin: 0 0 1em; color: var(--ink); max-width: 68ch; }
+a{ color: var(--green); }
+img{ max-width:100%; display:block; }
+
+:focus-visible{
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+    html{ scroll-behavior: auto; }
+}
+
+.container{ max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+/* ================= HEADER / NAV ================= */
+header{
+    position: sticky; top:0; z-index: 50;
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 16px;
+    padding: 14px 28px;
+    background: rgba(250,247,238,.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+}
+.logo{
+    display:flex; align-items:center; gap:8px;
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:22px;
+    color: var(--green-deep); text-decoration:none; white-space:nowrap;
+}
+.logo-icon{ font-size:24px; }
+.main-nav{
+    display:flex; gap: 4px; overflow-x:auto; scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+.main-nav::-webkit-scrollbar{ display:none; }
+.main-nav a{
+    text-decoration:none; color: var(--ink-soft); font-weight:600;
+    font-size: 14.5px; padding: 9px 13px; border-radius: 999px;
+    white-space:nowrap; transition: background .15s, color .15s;
+}
+.main-nav a:hover{ background: var(--green-wash); color: var(--green-deep); }
+.main-nav a.active{ background: var(--green-deep); color:#fff; }
+.lang-switch{
+    text-decoration:none; font-size:13.5px; font-weight:600;
+    color: var(--gold-deep); border:1.5px solid var(--gold); border-radius:999px;
+    padding: 7px 13px; white-space:nowrap;
+}
+
+/* ================= HERO (home page) ================= */
+.hero{
+    padding: 64px 24px 56px;
+    background:
+        radial-gradient(700px 320px at 88% -10%, var(--gold-wash), transparent 60%),
+        radial-gradient(700px 320px at 5% 110%, var(--green-wash), transparent 60%);
+}
+.hero-inner{
+    max-width: 1100px; margin:0 auto;
+    display:grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items:center;
+}
+.hero-eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    color: var(--gold-deep); font-weight:700; font-size:14px; margin-bottom:14px;
+}
+.hero h1{ margin-bottom: 16px; }
+.hero-lead{ font-size: 17.5px; color: var(--ink-soft); max-width: 52ch; }
+.hero-actions{ display:flex; flex-wrap:wrap; gap: 12px; margin-top: 26px; }
+.hero-stats{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+.hero-stat{
+    background:#fff; border:1px solid var(--line); border-radius: var(--radius-m);
+    padding: 18px 16px; box-shadow: var(--shadow);
+}
+.hero-stat .num{ font-family:'Baloo 2',sans-serif; font-size: 30px; font-weight:800; color: var(--green-deep); }
+.hero-stat .lbl{ color: var(--ink-soft); font-size: 13.5px; margin-top:2px; }
+
+.home-quicklinks{
+    padding: 10px 24px 70px;
+}
+.quicklink-grid{
+    max-width:1100px; margin:0 auto;
+    display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+}
+.quicklink-card{
+    display:block; text-decoration:none;
+    background:#fff; border:1px solid var(--line); border-radius: var(--radius-m);
+    padding: 22px 20px; box-shadow: var(--shadow);
+    border-top: 4px solid var(--green);
+    transition: transform .15s;
+}
+.quicklink-card:hover{ transform: translateY(-3px); }
+.quicklink-card .ql-icon{ font-size: 30px; margin-bottom: 10px; }
+.quicklink-card h3{ margin-bottom:6px; font-size:18px; }
+.quicklink-card p{ font-size: 14.5px; color: var(--ink-soft); margin:0; }
+.quicklink-card span.go{ display:inline-block; margin-top:10px; color: var(--green); font-weight:700; font-size:13.5px; }
+
+/* ================= GENERIC SECTION ================= */
+section{ padding: 56px 24px; }
+section.alt{ background: var(--paper-alt); }
+.section-heading{ max-width: 700px; margin: 0 auto 34px; text-align:center; }
+.section-heading p{ margin: 0 auto; color: var(--ink-soft); }
+
+.page-hero{
+    padding: 44px 24px 30px; text-align:center;
+    border-bottom: 1px solid var(--line);
+}
+.page-hero .tag{
+    display:inline-block; background: var(--green-wash); color: var(--green-deep);
+    font-weight:700; font-size:13px; padding:5px 12px; border-radius:999px; margin-bottom:12px;
+}
+.page-hero p{ margin:0 auto; color: var(--ink-soft); max-width:620px; }
+
+/* ================= ABOUT ================= */
+.about-container{ max-width: 820px; margin: 0 auto; }
+.about-content h3{ margin-top: 30px; }
+.about-stats{
+    display:grid; grid-template-columns: repeat(4,1fr); gap:14px;
+    margin: 30px 0;
+}
+.about-stat{
+    background:#fff; border:1px solid var(--line); border-radius: var(--radius-m);
+    text-align:center; padding: 18px 8px; box-shadow: var(--shadow);
+}
+.about-stat .num{ font-family:'Baloo 2',sans-serif; font-size:26px; font-weight:800; color: var(--green-deep); }
+.about-stat .lbl{ font-size:12.5px; color: var(--ink-soft); margin-top:4px; }
+
+/* ================= BENEFITS ================= */
+.benefits-grid{
+    max-width:1100px; margin:0 auto;
+    display:grid; grid-template-columns: repeat(3,1fr); gap: 18px;
+}
+.benefit-card{
+    background:#fff; border:1px solid var(--line); border-radius: var(--radius-m);
+    padding: 22px 20px; box-shadow: var(--shadow);
+}
+.benefit-icon{ font-size: 28px; margin-bottom: 10px; }
+.benefit-card p{ font-size: 14.5px; color: var(--ink-soft); margin:0; }
+
+/* ================= DISEASE GRID ================= */
+.disease-grid{
+    max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+}
+.disease-card{
+    background:#fff; border:1px solid var(--line); border-radius: var(--radius-m);
+    overflow:hidden; box-shadow: var(--shadow);
+}
+.disease-image{ width:100%; height:180px; object-fit:cover; }
+.disease-info{ padding: 16px 18px 20px; }
+.disease-label{
+    display:inline-block; background: var(--gold-wash); color: var(--gold-deep);
+    font-weight:700; font-size:12px; padding:4px 10px; border-radius:999px; margin-bottom:8px;
+}
+.disease-info h3{ font-size:17px; margin-bottom:6px; }
+.disease-info p{ font-size: 14px; color: var(--ink-soft); margin:0 0 6px; }
+
+.filter-bar{
+    max-width:1180px; margin: 0 auto 26px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+}
+.filter-chip{
+    border:1.5px solid var(--line); background:#fff; color: var(--ink-soft);
+    font-weight:600; font-size: 13.5px; padding: 7px 14px; border-radius:999px;
+    cursor:pointer;
+}
+.filter-chip.active{ background: var(--green-deep); border-color: var(--green-deep); color:#fff; }
+
+/* ================= TOOL SECTIONS ================= */
+.tool-box{
+    max-width: 760px; margin: 0 auto;
+    background:#fff; border:1px solid var(--line); border-radius: var(--radius-l);
+    padding: 30px 30px 34px; box-shadow: var(--shadow);
+}
+.field-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; margin-bottom: 18px; }
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field label{ font-size:14px; font-weight:600; color: var(--green-deep); }
+.field input, .field select{
+    padding: 10px 12px; border:1.5px solid var(--line); border-radius: var(--radius-s);
+    font-family:'Hind',sans-serif; font-size:15px; background: var(--paper);
+    color: var(--ink);
+}
+.field input:focus, .field select:focus{ border-color: var(--green); }
+.field-hint{ font-size:12px; color: var(--ink-faint); }
+
+.symptom-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px 16px; margin-bottom: 22px; }
+.symptom-check{
+    display:flex; align-items:center; gap:8px; font-size:14.5px; color: var(--ink);
+    background: var(--paper-alt); border-radius: var(--radius-s); padding: 9px 12px; cursor:pointer;
+}
+.symptom-check input{ accent-color: var(--green); width:16px; height:16px; }
+
+.action-btn{
+    display:inline-block; background: var(--green-deep); color:#fff; border:none;
+    font-family:'Hind',sans-serif; font-weight:700; font-size:15px;
+    padding: 12px 26px; border-radius: 999px; cursor:pointer;
+}
+.action-btn:hover{ background: var(--green); }
+.action-btn.secondary{
+    background:#fff; color: var(--green-deep); border:1.5px solid var(--green-deep);
+}
+.action-btn.secondary:hover{ background: var(--green-wash); }
+.action-btn.outline{
+    background:#fff; color: var(--gold-deep); border:1.5px solid var(--gold);
+}
+.action-btn.outline:hover{ background: var(--gold-wash); }
+
+.result-box{
+    display:none; margin-top: 24px; padding: 18px 20px; border-radius: var(--radius-m);
+    background: var(--green-wash); border: 1.5px solid #cfe3c4;
+}
+.result-box.show{ display:block; }
+.result-box.warn{ background: var(--warn-bg); border-color: var(--warn-border); }
+.result-box.bad{ background: var(--bad-bg); border-color: var(--bad-border); }
+.result-box h4{ margin-bottom:8px; font-size:17px; color: var(--green-deep); }
+.result-box p{ margin:0 0 6px; font-size:14.5px; }
+.result-row{ display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px dashed var(--line); font-size:14.5px; }
+.result-row:last-child{ border-bottom:none; }
+.result-row .val{ font-weight:700; color: var(--green-deep); }
+.result-row .val.big{ font-size:19px; }
+
+/* ================= IMAGE UPLOAD / CAMERA ================= */
+.photo-box{
+    max-width:760px; margin: 0 auto 22px;
+    background: var(--paper-alt); border:1.5px dashed var(--line); border-radius: var(--radius-l);
+    padding: 22px 24px;
+}
+.photo-box h3{ margin-bottom:4px; font-size:16.5px; }
+.photo-box .photo-note{ font-size:13px; color: var(--ink-faint); margin-bottom:16px; }
+.photo-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom: 14px; }
+.photo-actions input[type="file"]{ display:none; }
+.photo-stage{
+    display:none; grid-template-columns: 1fr 1fr; gap: 16px; align-items:start; margin-top: 6px;
+}
+.photo-stage.show{ display:grid; }
+.photo-preview-wrap{ position:relative; }
+.photo-preview{
+    width:100%; max-height:260px; object-fit:cover; border-radius: var(--radius-m);
+    border:1px solid var(--line); background:#fff;
+}
+.photo-remove{
+    position:absolute; top:8px; right:8px; background:rgba(34,48,30,.75); color:#fff;
+    border:none; border-radius:999px; width:28px; height:28px; cursor:pointer; font-size:14px;
+}
+.camera-wrap video{
+    width:100%; border-radius: var(--radius-m); border:1px solid var(--line); background:#000;
+    max-height:260px; object-fit:cover;
+}
+.camera-controls{ display:flex; gap:10px; margin-top:10px; }
+.photo-meta{ font-size:13.5px; color: var(--ink-soft); }
+.photo-meta strong{ color: var(--green-deep); }
+
+/* ================= MARKET ================= */
+.market-container{ max-width: 980px; margin:0 auto; }
+.market-header{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; }
+.market-meta{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.live-badge{ display:flex; align-items:center; gap:6px; font-weight:700; color: var(--clay); font-size:13.5px; }
+.live-dot{ width:8px; height:8px; border-radius:50%; background: var(--clay); animation: pulse 1.6s infinite; }
+@keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+.market-date{ font-size:13px; color: var(--ink-faint); }
+.refresh-btn{
+    border:1.5px solid var(--green-deep); background:#fff; color: var(--green-deep);
+    font-weight:700; font-size:13.5px; padding:7px 14px; border-radius:999px; cursor:pointer;
+}
+.refresh-btn:hover{ background: var(--green-wash); }
+.market-tabs{ display:flex; gap:8px; margin-bottom:14px; }
+.market-tab{
+    border:1.5px solid var(--line); padding:7px 16px; border-radius:999px; font-weight:600;
+    font-size:13.5px; cursor:pointer; color: var(--ink-soft); background:#fff;
+}
+.market-tab.active{ background: var(--green-deep); border-color: var(--green-deep); color:#fff; }
+.table-wrapper{ overflow-x:auto; background:#fff; border:1px solid var(--line); border-radius: var(--radius-m); }
+table{ width:100%; border-collapse:collapse; min-width:520px; }
+th,td{ text-align:left; padding: 12px 16px; font-size:14.5px; border-bottom:1px solid var(--line); }
+th{ color: var(--ink-faint); font-weight:700; font-size:12.5px; text-transform:none; }
+.crop-name{ font-weight:700; color: var(--green-deep); }
+.price{ font-weight:700; }
+.increase{ color: var(--green); }
+.decrease{ color: var(--clay); }
+.stable{ color: var(--ink-faint); }
+.market-note{ font-size:12.5px; color: var(--ink-faint); margin-top:12px; }
+
+/* ================= FOOTER ================= */
+footer{
+    text-align:center; padding: 26px 24px; color: var(--ink-faint); font-size:13.5px;
+    border-top: 1px solid var(--line); background: var(--paper-alt);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px){
+    .hero-inner{ grid-template-columns: 1fr; }
+    .quicklink-grid{ grid-template-columns: 1fr 1fr; }
+    .benefits-grid{ grid-template-columns: 1fr 1fr; }
+    .disease-grid{ grid-template-columns: 1fr 1fr; }
+    .about-stats{ grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px){
+    header{ padding: 12px 16px; }
+    .quicklink-grid{ grid-template-columns: 1fr; }
+    .benefits-grid{ grid-template-columns: 1fr; }
+    .disease-grid{ grid-template-columns: 1fr; }
+    .field-grid{ grid-template-columns: 1fr; }
+    .symptom-grid{ grid-template-columns: 1fr; }
+    .photo-stage{ grid-template-columns: 1fr; }
+    .tool-box{ padding: 22px 18px 26px; }
+    section{ padding: 40px 16px; }
+}
+
+
+/* ===== SPA page routing ===== */
+.page{ display:none; }
+.page.active{ display:block; }
+
+</style>
+</head>
+<body>
+
+<header>
+    <a href="home.html" class="logo"><span class="logo-icon">🌱</span> AgriGuard</a>
+    <nav class="main-nav">
+        <a href="home.html" data-page="home">Home</a>
+        <a href="about.html" data-page="about">About</a>
+        <a href="diseases.html" data-page="diseases">Diseases</a>
+        <a href="disease-predictor.html" data-page="predictor">Disease Check</a>
+        <a href="soil-predictor.html" data-page="soil">Soil Check</a>
+        <a href="yield-calculator.html" data-page="yield">Yield Calculator</a>
+        <a href="profit-calculator.html" data-page="profit">Profit Calculator</a>
+        <a href="market.html" data-page="market">Market Prices</a>
+    </nav>
+    <a href="agriguard-hi.html" class="lang-switch">हिंदी में देखें</a>
+</header>
+
+<main>
+
+<div class="page active" id="page-home">
+<!-- ================= HERO — brief only ================= -->
+<section class="hero">
+    <div class="hero-inner">
+        <div>
+            <div class="hero-eyebrow">🌱 For farmers, free</div>
+            <h1>A companion for every farming decision</h1>
+            <p class="hero-lead">
+                Identify crop diseases, check soil health, estimate yield and profit, and keep an eye
+                on market prices — all in one place.
+            </p>
+            <div class="hero-actions">
+                <a href="disease-predictor.html" class="action-btn">Check disease</a>
+                <a href="soil-predictor.html" class="action-btn secondary">Check soil</a>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat"><div class="num">30+</div><div class="lbl">Diseases covered</div></div>
+            <div class="hero-stat"><div class="num">33</div><div class="lbl">Crops & flowers</div></div>
+            <div class="hero-stat"><div class="num">5</div><div class="lbl">Farming tools</div></div>
+            <div class="hero-stat"><div class="num">2</div><div class="lbl">Languages</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= QUICK LINKS ================= -->
+<section class="home-quicklinks">
+    <div class="quicklink-grid">
+        <a class="quicklink-card" href="about.html">
+            <div class="ql-icon">🌱</div>
+            <h3>About AgriGuard</h3>
+            <p>What this platform is, who it's for, and how it works.</p>
+            <span class="go">Read more →</span>
+        </a>
+        <a class="quicklink-card" href="diseases.html">
+            <div class="ql-icon">🦠</div>
+            <h3>Crop & Flower Diseases</h3>
+            <p>Information on common diseases affecting grains, vegetables, fruits, and flowers.</p>
+            <span class="go">View →</span>
+        </a>
+        <a class="quicklink-card" href="disease-predictor.html">
+            <div class="ql-icon">🔍</div>
+            <h3>Disease Predictor</h3>
+            <p>Add a photo or select symptoms to get an educational, indicative match.</p>
+            <span class="go">Check →</span>
+        </a>
+        <a class="quicklink-card" href="soil-predictor.html">
+            <div class="ql-icon">🧪</div>
+            <h3>Soil Predictor</h3>
+            <p>Enter a photo and basic readings to get a summary of soil health.</p>
+            <span class="go">Check →</span>
+        </a>
+        <a class="quicklink-card" href="yield-calculator.html">
+            <div class="ql-icon">📦</div>
+            <h3>Yield Calculator</h3>
+            <p>Estimate the expected yield from your land.</p>
+            <span class="go">Calculate →</span>
+        </a>
+        <a class="quicklink-card" href="profit-calculator.html">
+            <div class="ql-icon">💰</div>
+            <h3>Profit Calculator</h3>
+            <p>Enter your expenses and expected earnings to see estimated profit or loss.</p>
+            <span class="go">Calculate →</span>
+        </a>
+    </div>
+</section>
+
+
+</div>
+
+<div class="page" id="page-about">
+<section class="about">
+    <div class="section-heading">
+        <h1>About AgriGuard 🌱</h1>
+        <p>
+            A smart, free agricultural information and planning platform that helps farmers identify
+            crop problems, understand soil, estimate yield, track farming profit, and know market
+            prices — all in one place.
+        </p>
+    </div>
+
+    <div class="about-container">
+        <div class="about-content">
+
+            <h3>What is AgriGuard?</h3>
+            <p>
+                AgriGuard is a smart agriculture platform that brings together the information farmers
+                need most: details on crop and flower diseases, guidance on soil conditions, expected
+                yield, farming profitability, and market price trends. Instead of visiting different
+                places, a farmer can see all of this information from one spot.
+            </p>
+            <p>
+                This platform is built around real farming decisions. Before sowing, a farmer wants to
+                know whether the soil is ready. While the crop is growing, symptoms of disease need to
+                be spotted early. Before harvest, they want to estimate how much yield they'll get.
+                After harvest, they need to know whether the season was profitable, and what price the
+                market is offering. AgriGuard is organized around these very stages — and each page is
+                focused on its own job.
+            </p>
+
+            <h3>Our Purpose</h3>
+            <p>
+                Our purpose is to make essential agricultural information simple, accessible, and free
+                for every farmer — regardless of farm size, crop type, or location. We believe that
+                better information, delivered in simple language, leads to better decisions in the
+                field and better outcomes at harvest.
+            </p>
+
+            <h3>What You Can Do on AgriGuard</h3>
+            <ul>
+                <li><strong>Learn about crop and flower diseases</strong> — see information on common diseases affecting grains, pulses, oilseeds, vegetables, fruits, and flower crops on the <a href="diseases.html">Diseases page</a>.</li>
+                <li><strong>Check a possible disease from a photo or symptoms</strong> — on the <a href="disease-predictor.html">Disease Predictor</a>, add a photo of your crop or select the symptoms you're seeing to get an educational, indicative match.</li>
+                <li><strong>Check soil condition</strong> — on the <a href="soil-predictor.html">Soil Predictor</a>, enter a photo or basic readings and get a simple-language summary of soil health along with suitable crop suggestions.</li>
+                <li><strong>Calculate expected yield</strong> — use the <a href="yield-calculator.html">Yield Calculator</a> to estimate how much yield (in quintals) your land is likely to produce.</li>
+                <li><strong>Calculate farming profit</strong> — in the <a href="profit-calculator.html">Profit Calculator</a>, enter what you spent and what you expect to earn, and see the estimated profit or loss.</li>
+                <li><strong>View market prices</strong> — on the <a href="market.html">Market Prices</a> page, see indicative, regularly-updated prices for major crops and flowers.</li>
+            </ul>
+
+            <div class="about-stats">
+                <div class="about-stat"><div class="num">30+</div><div class="lbl">Diseases covered</div></div>
+                <div class="about-stat"><div class="num">33</div><div class="lbl">Crops & flowers</div></div>
+                <div class="about-stat"><div class="num">5</div><div class="lbl">Farming tools</div></div>
+                <div class="about-stat"><div class="num">2</div><div class="lbl">Languages</div></div>
+            </div>
+
+            <h3>Crop & Flower Disease Information</h3>
+            <p>
+                Diseases can reduce both the quality and quantity of a crop, sometimes drastically.
+                AgriGuard provides educational information on common diseases affecting grains like
+                wheat and rice, cash crops like cotton and sugarcane, vegetables like tomato, potato,
+                and brinjal, fruits like mango, citrus, pomegranate, and grapes, spices like turmeric
+                and ginger, and flowers like rose and marigold.
+            </p>
+            <p>
+                This information is meant for awareness and early identification only. It is not a
+                diagnosis. Farmers should always consult a qualified agriculture officer or extension
+                worker before making any treatment decision. A photo added in the Disease Predictor is
+                also for record and reference only; the final suggestion is based on the symptoms you
+                select.
+            </p>
+
+            <h3>Soil Health Awareness</h3>
+            <p>
+                Soil pH, moisture, and nutrient levels (nitrogen, phosphorus, and potassium) play a big
+                role in deciding which crop will do well. AgriGuard's soil check turns a few basic
+                readings into a simple-language summary — whether the soil is acidic, alkaline, or
+                balanced, whether moisture is adequate, and which crops are typically suited to that
+                type of soil.
+            </p>
+
+            <h3>Farm Economics — Yield & Profit</h3>
+            <p>
+                Knowing how much yield a field is likely to produce, and how much that yield will sell
+                for, is essential to good farm planning. AgriGuard's calculators let a farmer estimate
+                total expected yield from a land area, and then work out estimated profit or loss once
+                expenses, yield, and selling price are entered.
+            </p>
+
+            <h3>Market Awareness</h3>
+            <p>
+                Crop and flower prices change constantly based on supply, demand, weather, and local
+                market conditions. AgriGuard shows indicative mandi prices for major crops and flowers
+                in a simple table that updates every time the site is used, so farmers can track
+                general price trends before deciding to sell.
+            </p>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================= BENEFITS ================= -->
+<section class="benefits alt">
+    <div class="section-heading">
+        <h2>How AgriGuard Helps Farmers</h2>
+        <p>Essential agricultural information and planning tools, made simple.</p>
+    </div>
+    <div class="benefits-grid">
+        <div class="benefit-card">
+            <div class="benefit-icon">🌾</div>
+            <h3>Crop Protection</h3>
+            <p>Learn about common crop and flower diseases and their symptoms to build awareness in the field.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">📷</div>
+            <h3>Photo & Symptom-Based Check</h3>
+            <p>Add a photo of your crop or soil, then select symptoms or readings to get an indicative check.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">🧪</div>
+            <h3>Soil Awareness</h3>
+            <p>Enter basic soil readings and get a simple check of soil health and suitable crops.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">📦</div>
+            <h3>Yield Planning</h3>
+            <p>Estimate the expected yield from your land before the season even ends.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">💰</div>
+            <h3>Profit Tracking</h3>
+            <p>Compare your farming expenses with expected earnings to see estimated profit or loss.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">📈</div>
+            <h3>Market Awareness</h3>
+            <p>View indicative crop and flower prices to understand market trends before selling.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">🌐</div>
+            <h3>In Your Language</h3>
+            <p>Use AgriGuard in English or Hindi — whichever is easier for you.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">🐛</div>
+            <h3>Smart Pest & Resource Management</h3>
+            <p>Spot pest outbreaks early and use water, fertilizer, and other resources wisely.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">🗓️</div>
+            <h3>Crop Planning</h3>
+            <p>Plan your whole season from sowing to harvest, keeping weather and market trends in mind.</p>
+        </div>
+    </div>
+</section>
+
+
+</div>
+
+<div class="page" id="page-diseases">
+<div class="page-hero">
+    <span class="tag">Disease Library</span>
+    <h1>Major Crop & Flower Diseases</h1>
+    <p>Learn about common diseases affecting agricultural crops, vegetables, fruits, spices, and flowers. If you see symptoms, visit the <a href="disease-predictor.html">Disease Predictor</a> for an indicative match.</p>
+</div>
+
+<section>
+    <div class="filter-bar" id="disease-filter-bar">
+        <button class="filter-chip active" data-cat="all">All</button>
+        <button class="filter-chip" data-cat="grain">Grains</button>
+        <button class="filter-chip" data-cat="veg">Vegetables</button>
+        <button class="filter-chip" data-cat="fruit">Fruits</button>
+        <button class="filter-chip" data-cat="pulse">Pulses & Oilseeds</button>
+        <button class="filter-chip" data-cat="spice">Spices</button>
+        <button class="filter-chip" data-cat="flower">Flowers</button>
+    </div>
+
+    <div class="disease-grid" id="disease-grid">
+
+        <div class="disease-card" data-cat="veg">
+            <div class="disease-image" style="background:linear-gradient(135deg,#ff8a65,#c0392b);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🍅</div>
+            <div class="disease-info">
+                <span class="disease-label">Tomato</span>
+                <h3>Early Blight</h3>
+                <p>A common fungal disease affecting tomatoes and related crops. Dark spots and lesions can develop on the leaves.</p>
+                <p>Warm and humid conditions can encourage this disease.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="grain">
+            <div class="disease-image" style="background:linear-gradient(135deg,#f2c14e,#a9761d);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌾</div>
+            <div class="disease-info">
+                <span class="disease-label">Wheat</span>
+                <h3>Wheat Rust</h3>
+                <p>Rust disease can produce orange-brown or rust-colored pustules on wheat plants.</p>
+                <p>Severe infections can affect plant growth and grain production.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="grain">
+            <div class="disease-image" style="background:linear-gradient(135deg,#66bb6a,#1b5e20);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌱</div>
+            <div class="disease-info">
+                <span class="disease-label">Rice</span>
+                <h3>Rice Blast</h3>
+                <p>Rice blast is a fungal disease that can create lesions on leaves and other parts of the plant.</p>
+                <p>Severe infection can cause significant yield loss.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="veg">
+            <div class="disease-image" style="background:linear-gradient(135deg,#a1887f,#5d4037);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🥔</div>
+            <div class="disease-info">
+                <span class="disease-label">Potato</span>
+                <h3>Late Blight</h3>
+                <p>Late blight can create dark lesions on the leaves and stems of potato and tomato plants.</p>
+                <p>Cool, wet, and humid conditions can help it spread.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="fruit">
+            <div class="disease-image" style="background:linear-gradient(135deg,#eceff1,#b0bec5);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🍇</div>
+            <div class="disease-info">
+                <span class="disease-label">Multiple crops</span>
+                <h3>Powdery Mildew</h3>
+                <p>Powdery mildew creates a white, powdery coating on the surface of plants.</p>
+                <p>It can affect many agricultural and horticultural crops, including grapes and mango.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="pulse">
+            <div class="disease-image" style="background:linear-gradient(135deg,#9ccc65,#2e7d32);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🫘</div>
+            <div class="disease-info">
+                <span class="disease-label">Pulses</span>
+                <h3>Downy Mildew</h3>
+                <p>Under favorable conditions, downy mildew can create yellow or pale spots on leaves.</p>
+                <p>High humidity and prolonged leaf wetness help it develop.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="grain">
+            <div class="disease-image" style="background:linear-gradient(135deg,#e6b800,#a67c00);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌾</div>
+            <div class="disease-info">
+                <span class="disease-label">Rice</span>
+                <h3>Bacterial Leaf Blight</h3>
+                <p>A bacterial disease that creates water-soaked streaks on leaves, which later turn yellow and dry out, often with wilting.</p>
+                <p>It spreads quickly in warm, humid weather and standing water.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="pulse">
+            <div class="disease-image" style="background:linear-gradient(135deg,#6b8e4e,#3d5a29);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌿</div>
+            <div class="disease-info">
+                <span class="disease-label">Cotton & Banana</span>
+                <h3>Fusarium Wilt</h3>
+                <p>A soil-borne fungal disease that blocks water movement inside the plant, causing wilting and yellowing even when there's enough water.</p>
+                <p>Infected plants often show soft rot near the base of the stem.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="fruit">
+            <div class="disease-image" style="background:linear-gradient(135deg,#ff9f43,#e8590c);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🍊</div>
+            <div class="disease-info">
+                <span class="disease-label">Citrus fruits</span>
+                <h3>Citrus Canker</h3>
+                <p>A bacterial disease that creates raised, water-soaked spots on the leaves, stems, and fruit of citrus trees.</p>
+                <p>Wind-driven rain and insect damage can help it spread between trees.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="fruit">
+            <div class="disease-image" style="background:linear-gradient(135deg,#8bc34a,#33691e);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🥭</div>
+            <div class="disease-info">
+                <span class="disease-label">Mango, chilli & grapes</span>
+                <h3>Anthracnose</h3>
+                <p>A fungal disease that creates dark, sunken lesions on the leaves, fruit, and flowers of many fruit and vegetable crops.</p>
+                <p>Humid weather during flowering and fruiting increases the risk.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="pulse">
+            <div class="disease-image" style="background:linear-gradient(135deg,#7c4dff,#4527a0);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌱</div>
+            <div class="disease-info">
+                <span class="disease-label">Cotton</span>
+                <h3>Cotton Leaf Curl Virus</h3>
+                <p>A virus spread by whitefly that causes leaves to curl upward, thicken, and show stunted, twisted growth.</p>
+                <p>Controlling whitefly numbers helps limit its spread.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="flower">
+            <div class="disease-image" style="background:linear-gradient(135deg,#f48fb1,#ad1457);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌹</div>
+            <div class="disease-info">
+                <span class="disease-label">Rose & marigold</span>
+                <h3>Botrytis Blight (Gray Mold)</h3>
+                <p>A fungal disease that creates gray, fuzzy mold on flower buds, petals, and stems, often after cool, humid weather.</p>
+                <p>Good air circulation and removing spent flowers can reduce its spread.</p>
+            </div>
+        </div>
+
+        <!-- ===== newly added entries ===== -->
+
+        <div class="disease-card" data-cat="pulse">
+            <div class="disease-image" style="background:linear-gradient(135deg,#c9a227,#7a6412);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🥜</div>
+            <div class="disease-info">
+                <span class="disease-label">Groundnut</span>
+                <h3>Tikka Disease (Leaf Spot)</h3>
+                <p>Creates dark brown to black round spots on leaves, which can cause premature leaf drop.</p>
+                <p>Crop rotation helps limit its spread.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="pulse">
+            <div class="disease-image" style="background:linear-gradient(135deg,#ffd54f,#f57f17);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌻</div>
+            <div class="disease-info">
+                <span class="disease-label">Sunflower</span>
+                <h3>Alternaria Blight</h3>
+                <p>Creates dark spots on leaves, stems, and the flower disc, spreading quickly in dense sowing.</p>
+                <p>Certified seed and proper spacing reduce the risk.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="grain">
+            <div class="disease-image" style="background:linear-gradient(135deg,#d4b483,#8c6b3c);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌾</div>
+            <div class="disease-info">
+                <span class="disease-label">Barley</span>
+                <h3>Barley Rust</h3>
+                <p>Creates orange-brown pustules on leaves, which weaken grain filling when severe.</p>
+                <p>Rust-resistant varieties are the most reliable protection.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="veg">
+            <div class="disease-image" style="background:linear-gradient(135deg,#8e6fce,#4a2f7a);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🍆</div>
+            <div class="disease-info">
+                <span class="disease-label">Brinjal</span>
+                <h3>Fruit & Stem Blight</h3>
+                <p>Creates dark, sunken lesions on fruit and stems that spread quickly in humid weather.</p>
+                <p>Removing infected parts promptly helps stop the spread.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="veg">
+            <div class="disease-image" style="background:linear-gradient(135deg,#7cb342,#33691e);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🫛</div>
+            <div class="disease-info">
+                <span class="disease-label">Okra</span>
+                <h3>Yellow Vein Mosaic Virus</h3>
+                <p>Leaf veins turn yellow and growth stalls; whitefly spreads this virus.</p>
+                <p>Timely whitefly control limits its spread.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="veg">
+            <div class="disease-image" style="background:linear-gradient(135deg,#9ccc65,#558b2f);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🥦</div>
+            <div class="disease-info">
+                <span class="disease-label">Cauliflower & cabbage</span>
+                <h3>Black Rot</h3>
+                <p>Creates V-shaped yellow spots at the leaf margins that later turn black.</p>
+                <p>Clean seed and crop rotation help prevent it.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="spice">
+            <div class="disease-image" style="background:linear-gradient(135deg,#f9a825,#e65100);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🟡</div>
+            <div class="disease-info">
+                <span class="disease-label">Turmeric</span>
+                <h3>Rhizome Rot</h3>
+                <p>Excess soil moisture causes the rhizomes to rot and the plant to wilt.</p>
+                <p>Good field drainage is the most important preventive measure.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="spice">
+            <div class="disease-image" style="background:linear-gradient(135deg,#c69c6d,#7a4a25);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🫚</div>
+            <div class="disease-info">
+                <span class="disease-label">Ginger</span>
+                <h3>Rhizome Rot</h3>
+                <p>Rot in the roots and rhizomes turns the plant yellow and wilted, especially in waterlogged fields.</p>
+                <p>Sowing on raised beds improves drainage.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="fruit">
+            <div class="disease-image" style="background:linear-gradient(135deg,#ffb74d,#ef6c00);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌴</div>
+            <div class="disease-info">
+                <span class="disease-label">Papaya</span>
+                <h3>Papaya Ringspot Virus</h3>
+                <p>Mosaic spots on leaves and stunted growth are common symptoms; aphids spread it.</p>
+                <p>Aphid control and disease-resistant varieties are most effective.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="fruit">
+            <div class="disease-image" style="background:linear-gradient(135deg,#e57373,#b71c1c);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🔴</div>
+            <div class="disease-info">
+                <span class="disease-label">Pomegranate</span>
+                <h3>Bacterial Blight</h3>
+                <p>Creates dark, water-soaked spots on leaves, fruit, and branches that may later crack open.</p>
+                <p>Pruning infected branches and disinfecting tools prevents spread.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="fruit">
+            <div class="disease-image" style="background:linear-gradient(135deg,#aed581,#33691e);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🍏</div>
+            <div class="disease-info">
+                <span class="disease-label">Apple</span>
+                <h3>Apple Scab</h3>
+                <p>Creates velvety, dark brown spots on leaves and fruit; most common in humid spring weather.</p>
+                <p>Removing fallen infected leaves reduces infection the following season.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="flower">
+            <div class="disease-image" style="background:linear-gradient(135deg,#ba68c8,#6a1b9a);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌸</div>
+            <div class="disease-info">
+                <span class="disease-label">Chrysanthemum</span>
+                <h3>Leaf Spot</h3>
+                <p>Creates round, dark spots on leaves that enlarge and can merge together.</p>
+                <p>Avoiding overhead watering slows the spread.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="flower">
+            <div class="disease-image" style="background:linear-gradient(135deg,#fff176,#f9a825);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌼</div>
+            <div class="disease-info">
+                <span class="disease-label">Jasmine</span>
+                <h3>Powdery Mildew</h3>
+                <p>Creates a white, powdery coating on leaves and buds, reducing flower quality.</p>
+                <p>Pruning to improve air circulation helps reduce infection.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="flower">
+            <div class="disease-image" style="background:linear-gradient(135deg,#f06292,#ad1457);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🌷</div>
+            <div class="disease-info">
+                <span class="disease-label">Lily</span>
+                <h3>Botrytis Blight (Gray Mold)</h3>
+                <p>Creates a gray fungal coating on petals and stems in cool, humid weather.</p>
+                <p>Regularly removing spent flowers and improving air circulation helps.</p>
+            </div>
+        </div>
+
+        <div class="disease-card" data-cat="grain">
+            <div class="disease-image" style="background:linear-gradient(135deg,#a1887f,#4e342e);display:flex;align-items:center;justify-content:center;font-size:70px;height:200px;">🎋</div>
+            <div class="disease-info">
+                <span class="disease-label">Sugarcane</span>
+                <h3>Red Rot</h3>
+                <p>Creates red streaks inside the stem and weakens the plant from within.</p>
+                <p>Using disease-free seed cane is the most essential precaution.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+</div>
+
+<div class="page" id="page-predictor">
+<div class="page-hero">
+    <span class="tag">Disease Predictor</span>
+    <h1>Crop Disease Predictor 🔍</h1>
+    <p>Add a photo of the affected leaf or plant and select your crop and the symptoms you see, to get an educational, indicative match.</p>
+</div>
+
+<section>
+
+    <!-- ===== PHOTO UPLOAD / CAMERA ===== -->
+    <div class="photo-box">
+        <h3>📷 Add a Photo of the Plant or Leaf (optional)</h3>
+        <p class="photo-note">The photo is for record and reference purposes. For an accurate match, also select the crop and symptoms below.</p>
+
+        <div class="photo-actions">
+            <button type="button" class="action-btn secondary" id="pd-upload-btn">🖼️ Upload Photo</button>
+            <input type="file" id="pd-file-input" accept="image/*">
+            <button type="button" class="action-btn outline" id="pd-camera-btn">📸 Open Camera</button>
+        </div>
+
+        <div class="camera-wrap" id="pd-camera-wrap" style="display:none;">
+            <video id="pd-video" autoplay playsinline muted></video>
+            <div class="camera-controls">
+                <button type="button" class="action-btn" id="pd-snap-btn">Take Photo</button>
+                <button type="button" class="action-btn secondary" id="pd-cancel-camera-btn">Cancel</button>
+            </div>
+            <canvas id="pd-canvas" style="display:none;"></canvas>
+        </div>
+
+        <div class="photo-stage" id="pd-stage">
+            <div class="photo-preview-wrap">
+                <img class="photo-preview" id="pd-preview" alt="Added photo">
+                <button type="button" class="photo-remove" id="pd-remove-btn" aria-label="Remove photo">✕</button>
+            </div>
+            <p class="photo-meta" id="pd-photo-meta"></p>
+        </div>
+    </div>
+
+    <!-- ===== SYMPTOM FORM ===== -->
+    <div class="tool-box">
+        <div class="field-grid">
+            <div class="field">
+                <label for="pd-crop">Crop / Flower</label>
+                <select id="pd-crop"></select>
+            </div>
+        </div>
+
+        <label style="font-size:14px;font-weight:600;color:#2c4a2e;display:block;margin-bottom:10px;">
+            Symptoms you're seeing (select all that apply)
+        </label>
+        <div class="symptom-grid">
+            <label class="symptom-check"><input type="checkbox" value="1"> Yellow/brown spots on leaves</label>
+            <label class="symptom-check"><input type="checkbox" value="2"> White powdery coating on leaves</label>
+            <label class="symptom-check"><input type="checkbox" value="3"> Orange/rust-colored pustules</label>
+            <label class="symptom-check"><input type="checkbox" value="4"> Dark, water-soaked lesions</label>
+            <label class="symptom-check"><input type="checkbox" value="5"> Wilting even with enough water</label>
+            <label class="symptom-check"><input type="checkbox" value="6"> Pale/yellow spots, fuzzy growth underneath</label>
+            <label class="symptom-check"><input type="checkbox" value="7"> Stunted or curled growth</label>
+            <label class="symptom-check"><input type="checkbox" value="8"> Soft rot at the base of stem/root</label>
+            <label class="symptom-check"><input type="checkbox" value="9"> Rot on fruit or root</label>
+            <label class="symptom-check"><input type="checkbox" value="10"> Black spots on leaves and leaf drop</label>
+        </div>
+
+        <button class="action-btn" onclick="predictDisease()">Check Possible Disease</button>
+
+        <div class="result-box" id="pd-result">
+            <h4 id="pd-title"></h4>
+            <p id="pd-confidence"></p>
+            <p id="pd-desc"></p>
+            <p id="pd-advice"></p>
+            <p style="font-size:12.5px;color:#8b968b;margin-top:10px;">
+                This is educational information only, not a diagnosis. Please confirm with a qualified
+                agriculture officer before making a treatment decision.
+            </p>
+        </div>
+    </div>
+</section>
+
+
+</div>
+
+<div class="page" id="page-soil">
+<div class="page-hero">
+    <span class="tag">Soil Predictor</span>
+    <h1>Soil Condition Predictor 🧪</h1>
+    <p>Add a photo of your field or soil sample and enter basic readings, to get a simple-language summary of soil health.</p>
+</div>
+
+<section>
+
+    <!-- ===== PHOTO UPLOAD / CAMERA ===== -->
+    <div class="photo-box">
+        <h3>📷 Add a Photo of the Field or Soil (optional)</h3>
+        <p class="photo-note">The photo is for record and reference purposes. For an accurate check, also fill in the readings below.</p>
+
+        <div class="photo-actions">
+            <button type="button" class="action-btn secondary" id="soil-upload-btn">🖼️ Upload Photo</button>
+            <input type="file" id="soil-file-input" accept="image/*">
+            <button type="button" class="action-btn outline" id="soil-camera-btn">📸 Open Camera</button>
+        </div>
+
+        <div class="camera-wrap" id="soil-camera-wrap" style="display:none;">
+            <video id="soil-video" autoplay playsinline muted></video>
+            <div class="camera-controls">
+                <button type="button" class="action-btn" id="soil-snap-btn">Take Photo</button>
+                <button type="button" class="action-btn secondary" id="soil-cancel-camera-btn">Cancel</button>
+            </div>
+            <canvas id="soil-canvas" style="display:none;"></canvas>
+        </div>
+
+        <div class="photo-stage" id="soil-stage">
+            <div class="photo-preview-wrap">
+                <img class="photo-preview" id="soil-preview" alt="Added photo">
+                <button type="button" class="photo-remove" id="soil-remove-btn" aria-label="Remove photo">✕</button>
+            </div>
+            <p class="photo-meta" id="soil-photo-meta"></p>
+        </div>
+    </div>
+
+    <!-- ===== READING FORM ===== -->
+    <div class="tool-box">
+        <div class="field-grid">
+            <div class="field">
+                <label for="soil-ph">Soil pH</label>
+                <input type="number" id="soil-ph" min="0" max="14" step="0.1" placeholder="e.g. 6.5" value="6.5">
+                <span class="field-hint">Typical range 0 (acidic) – 14 (alkaline)</span>
+            </div>
+            <div class="field">
+                <label for="soil-moisture">Moisture (%)</label>
+                <input type="number" id="soil-moisture" min="0" max="100" step="1" placeholder="e.g. 35" value="35">
+            </div>
+            <div class="field">
+                <label for="soil-n">Nitrogen (N) Level</label>
+                <select id="soil-n"><option value="Low">Low</option><option value="Medium" selected>Medium</option><option value="High">High</option></select>
+            </div>
+            <div class="field">
+                <label for="soil-p">Phosphorus (P) Level</label>
+                <select id="soil-p"><option value="Low">Low</option><option value="Medium" selected>Medium</option><option value="High">High</option></select>
+            </div>
+            <div class="field">
+                <label for="soil-k">Potassium (K) Level</label>
+                <select id="soil-k"><option value="Low">Low</option><option value="Medium" selected>Medium</option><option value="High">High</option></select>
+            </div>
+            <div class="field">
+                <label for="soil-type">Soil Type</label>
+                <select id="soil-type">
+                    <option value="Loamy">Loamy</option>
+                    <option value="Sandy">Sandy</option>
+                    <option value="Clay">Clay</option>
+                    <option value="Silty">Silty</option>
+                    <option value="Black (Regur)">Black (Regur)</option>
+                    <option value="Red">Red</option>
+                    <option value="Laterite">Laterite</option>
+                    <option value="Alluvial">Alluvial</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="action-btn" onclick="predictSoil()">Check Soil Condition</button>
+
+        <div class="result-box" id="soil-result">
+            <h4 id="soil-title"></h4>
+            <p id="soil-ph-line"></p>
+            <p id="soil-moisture-line"></p>
+            <p id="soil-npk-line"></p>
+            <p id="soil-suited-line"></p>
+            <p id="soil-tip" style="margin-top:8px;"></p>
+        </div>
+    </div>
+</section>
+
+
+</div>
+
+<div class="page" id="page-yield">
+<div class="page-hero">
+    <span class="tag">Yield Calculator</span>
+    <h1>Expected Yield Calculator 📦</h1>
+    <p>Estimate how much yield your land is likely to produce.</p>
+</div>
+
+<section>
+    <div class="tool-box">
+        <div class="field-grid">
+            <div class="field">
+                <label for="yc-crop">Crop / Flower</label>
+                <select id="yc-crop" onchange="fillYieldDefault()"></select>
+            </div>
+            <div class="field">
+                <label for="yc-area">Land Area (in acres)</label>
+                <input type="number" id="yc-area" min="0" step="0.1" placeholder="e.g. 2" value="2">
+                <span class="field-hint">1 hectare ≈ 2.47 acres</span>
+            </div>
+            <div class="field">
+                <label for="yc-rate">Expected Yield (quintals per acre)</label>
+                <input type="number" id="yc-rate" min="0" step="0.1">
+                <span class="field-hint">A typical estimate is filled in automatically — change it if you know your own average</span>
+            </div>
+        </div>
+
+        <button class="action-btn" onclick="calculateYield()">Calculate Expected Yield</button>
+
+        <div class="result-box" id="yc-result">
+            <h4>Estimated Production</h4>
+            <div class="result-row"><span>Total Yield</span><span class="val big" id="yc-quintal">—</span></div>
+            <div class="result-row"><span>In Kilograms</span><span class="val" id="yc-kg">—</span></div>
+            <div class="result-row"><span>In Tonnes</span><span class="val" id="yc-tonne">—</span></div>
+            <p style="font-size:12.5px;color:#8b968b;margin-top:10px;">
+                Actual yield depends on variety, weather, irrigation, and field care. Treat this as a
+                planning estimate, not a guarantee.
+            </p>
+        </div>
+        <p style="text-align:center;margin-top:18px;font-size:14px;">
+            Want to know your profit next? <a href="profit-calculator.html">Go to the Profit Calculator →</a>
+        </p>
+    </div>
+</section>
+
+
+</div>
+
+<div class="page" id="page-profit">
+<div class="page-hero">
+    <span class="tag">Profit Calculator</span>
+    <h1>Farming Profit Calculator 💰</h1>
+    <p>Enter your expenses and expected earnings to see estimated profit or loss.</p>
+</div>
+
+<section>
+    <div class="tool-box">
+        <div class="field-grid">
+            <div class="field">
+                <label for="pc-crop">Crop / Flower (for market price)</label>
+                <select id="pc-crop"></select>
+            </div>
+            <div class="field">
+                <label for="pc-expense">Total Expense to Grow This Crop (₹)</label>
+                <input type="number" id="pc-expense" min="0" step="100" placeholder="e.g. 25000" value="25000">
+            </div>
+            <div class="field">
+                <label for="pc-yield">Total Yield (quintals)</label>
+                <input type="number" id="pc-yield" min="0" step="0.1" placeholder="e.g. 36">
+                <button class="action-btn secondary" style="margin-top:8px;padding:8px 12px;font-size:12.5px;" onclick="pullYieldIntoProfit()">⬇ Fill from Yield Calculator</button>
+            </div>
+            <div class="field">
+                <label for="pc-price">Expected Selling Price (₹ per quintal)</label>
+                <input type="number" id="pc-price" min="0" step="10" placeholder="e.g. 2450">
+                <button class="action-btn secondary" style="margin-top:8px;padding:8px 12px;font-size:12.5px;" onclick="pullPriceIntoProfit()">⬇ Fill Today's Market Price</button>
+            </div>
+        </div>
+
+        <button class="action-btn" onclick="calculateProfit()">Calculate Profit</button>
+
+        <div class="result-box" id="pc-result">
+            <h4 id="pc-title">Estimated Result</h4>
+            <div class="result-row"><span>Total Expense</span><span class="val" id="pc-out-expense">—</span></div>
+            <div class="result-row"><span>Total Revenue</span><span class="val" id="pc-out-revenue">—</span></div>
+            <div class="result-row"><span id="pc-pl-label">Net Profit</span><span class="val big" id="pc-out-profit">—</span></div>
+            <div class="result-row"><span>Profit Margin</span><span class="val" id="pc-out-margin">—</span></div>
+        </div>
+        <p style="text-align:center;margin-top:18px;font-size:14px;">
+            Don't have a yield estimate? <a href="yield-calculator.html">Go to the Yield Calculator →</a>
+        </p>
+    </div>
+</section>
+
+
+</div>
+
+<div class="page" id="page-market">
+<div class="page-hero">
+    <span class="tag">Market Prices</span>
+    <h1>Crop & Flower Market Prices 📊</h1>
+    <p>Indicative mandi prices for major crops and flowers, updated each time the site is used.</p>
+</div>
+
+<section class="market" id="market">
+    <div class="market-container">
+        <div class="market-header">
+            <h3>Today's Prices</h3>
+            <div class="market-meta">
+                <span class="live-badge"><span class="live-dot"></span> LIVE</span>
+                <div class="market-date" id="marketDate">Loading...</div>
+                <button class="refresh-btn" onclick="refreshMarket()">↻ Refresh Prices</button>
+            </div>
+        </div>
+
+        <div class="market-tabs">
+            <div class="market-tab active" data-cat="all" onclick="filterMarket('all',this)">All</div>
+            <div class="market-tab" data-cat="crop" onclick="filterMarket('crop',this)">Crops</div>
+            <div class="market-tab" data-cat="flower" onclick="filterMarket('flower',this)">Flowers</div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Crop / Flower</th><th>Market</th><th>Price / Quintal</th><th>Change</th><th>Trend</th></tr>
+                </thead>
+                <tbody id="market-body"></tbody>
+            </table>
+        </div>
+        <div class="market-note">
+            Prices are indicative and simulated for demonstration. For official prices, check your
+            local mandi or the government Agmarknet portal.
+        </div>
+    </div>
+</section>
+
+
+</div>
+
+</main>
+
+<footer>© 2026 AgriGuard. Smart information for better farming.</footer>
+</body>
+<script>
+/* =====================================================
+   AgriGuard — shared data & logic (all pages load this file)
+   ===================================================== */
+
+/* ================= DISEASE PREDICTOR DATA ================= */
+const symptomLabels = {
+    1: "Yellow/brown spots on leaves",
+    2: "White powdery coating on leaves",
+    3: "Orange/rust-colored pustules",
+    4: "Dark, water-soaked lesions",
+    5: "Wilting even with enough water",
+    6: "Pale/yellow spots, fuzzy growth underneath",
+    7: "Stunted or curled growth",
+    8: "Soft rot at the base of stem/root",
+    9: "Rot on fruit or root",
+    10: "Black spots on leaves and leaf drop"
+};
+
+const diseaseDB = {
+    Tomato: [
+        { name: "Early Blight", symptoms: [1,4], advice: "Remove infected lower leaves, improve air circulation between plants, and avoid overhead watering." },
+        { name: "Late Blight", symptoms: [4,6], advice: "Destroy infected plant parts immediately and avoid working in the field when leaves are wet." },
+        { name: "Fruit Rot", symptoms: [9], advice: "Harvest ripe and damaged fruit promptly and avoid waterlogging in the field." }
+    ],
+    Potato: [
+        { name: "Late Blight", symptoms: [4,6], advice: "Ensure good field drainage and remove infected leaves; avoid overwatering in cool, humid weather." },
+        { name: "Tuber Rot", symptoms: [8,9], advice: "Dry tubers thoroughly before storage and keep injured or cut tubers separate." }
+    ],
+    Wheat: [
+        { name: "Wheat Rust", symptoms: [3], advice: "Use rust-resistant varieties where available and monitor the field closely in humid weather." },
+        { name: "Powdery Mildew", symptoms: [2], advice: "Avoid dense sowing to improve air circulation and reduce leaf moisture." },
+        { name: "Karnal Bunt", symptoms: [1,9], advice: "Use certified, disease-free seed and avoid excess moisture during flowering." }
+    ],
+    Rice: [
+        { name: "Rice Blast", symptoms: [1,4], advice: "Avoid excess nitrogen fertilizer and maintain a balanced water level in the field." },
+        { name: "Bacterial Leaf Blight", symptoms: [4,5], advice: "Use clean seed, avoid waterlogging after storms, and remove infected residue after harvest." },
+        { name: "Sheath Blight", symptoms: [4,8], advice: "Keep proper spacing between plants and avoid excess nitrogen fertilizer." }
+    ],
+    Cotton: [
+        { name: "Cotton Leaf Curl Virus", symptoms: [7], advice: "Control whitefly numbers, since they spread this virus between plants." },
+        { name: "Fusarium Wilt", symptoms: [5,8], advice: "Follow crop rotation and avoid replanting cotton in heavily infected fields." },
+        { name: "Bacterial Blight", symptoms: [1,4], advice: "Sow certified seed and destroy infected plant residue after harvest." }
+    ],
+    Sugarcane: [
+        { name: "Red Rot", symptoms: [4,5], advice: "Use disease-free seed cane and avoid waterlogging in the field." },
+        { name: "Smut", symptoms: [7], advice: "Uproot and destroy infected plants completely and plant disease-resistant varieties." }
+    ],
+    Maize: [
+        { name: "Maize Leaf Blight", symptoms: [1,4], advice: "Follow crop rotation and clear old crop residue where the fungus can survive." },
+        { name: "Downy Mildew", symptoms: [6], advice: "Improve field drainage and avoid excess overhead irrigation." }
+    ],
+    Soybean: [
+        { name: "Downy Mildew", symptoms: [6], advice: "Improve air circulation between rows and avoid working in the field when leaves are wet." },
+        { name: "Soybean Rust", symptoms: [3], advice: "Watch the lower leaves closely, since rust often appears there first." }
+    ],
+    Mustard: [
+        { name: "Alternaria Blight", symptoms: [1,4], advice: "Avoid dense sowing and remove infected plant residue after harvest." },
+        { name: "Powdery Mildew", symptoms: [2], advice: "More spacing between plants can lower humidity around leaves and slow the spread." }
+    ],
+    Chilli: [
+        { name: "Anthracnose", symptoms: [4], advice: "Remove and destroy infected fruit and avoid overhead watering close to harvest." },
+        { name: "Powdery Mildew", symptoms: [2], advice: "Improve air circulation and avoid excess nitrogen fertilizer." }
+    ],
+    Mango: [
+        { name: "Anthracnose", symptoms: [4], advice: "Prune for better air circulation and remove fallen infected leaves and fruit." },
+        { name: "Powdery Mildew", symptoms: [2], advice: "Most common during flowering in cool, humid weather; watch the flowers closely." }
+    ],
+    Citrus: [
+        { name: "Citrus Canker", symptoms: [1,4], advice: "Avoid working in a wet orchard and disinfect pruning tools between trees." }
+    ],
+    Grapes: [
+        { name: "Downy Mildew", symptoms: [6], advice: "Improve canopy air circulation through pruning and avoid overhead irrigation." },
+        { name: "Powdery Mildew", symptoms: [2], advice: "Regular canopy management reduces humidity and slows the spread." }
+    ],
+    Banana: [
+        { name: "Fusarium Wilt (Panama Disease)", symptoms: [5,8], advice: "Use disease-free planting material and avoid replanting in heavily infected soil." }
+    ],
+    Cabbage: [
+        { name: "Black Rot", symptoms: [1,8], advice: "Use clean seed, follow crop rotation, and avoid working in the field when leaves are wet." }
+    ],
+    Rose: [
+        { name: "Black Spot", symptoms: [10], advice: "Remove fallen infected leaves promptly and avoid wetting leaves while watering." },
+        { name: "Botrytis Blight (Gray Mold)", symptoms: [4,8], advice: "Improve air circulation around plants and remove spent flowers regularly." }
+    ],
+    Marigold: [
+        { name: "Botrytis Blight (Gray Mold)", symptoms: [4,8], advice: "Keep spacing between plants for air circulation and avoid overhead watering in cool weather." }
+    ],
+    Jasmine: [
+        { name: "Powdery Mildew", symptoms: [2], advice: "Prune for air circulation and avoid excess nitrogen fertilizer during flowering." }
+    ],
+    Groundnut: [
+        { name: "Tikka Disease (Leaf Spot)", symptoms: [1,10], advice: "Follow crop rotation and remove infected residue from the field after harvest." },
+        { name: "Collar Rot", symptoms: [8], advice: "Treat seed before sowing and avoid excess moisture in the field." }
+    ],
+    Sunflower: [
+        { name: "Alternaria Blight", symptoms: [1,10], advice: "Use certified seed and avoid dense sowing." },
+        { name: "Downy Mildew", symptoms: [6,7], advice: "Improve field drainage and choose disease-resistant varieties." }
+    ],
+    Barley: [
+        { name: "Barley Rust", symptoms: [3], advice: "Sow on time and prioritize rust-resistant varieties." }
+    ],
+    Lentil: [
+        { name: "Rust", symptoms: [3], advice: "Sow with proper spacing to improve air circulation in the field." },
+        { name: "Wilt", symptoms: [5,8], advice: "Follow crop rotation and use disease-free seed." }
+    ],
+    Pea: [
+        { name: "Powdery Mildew", symptoms: [2], advice: "Sow on time to avoid hot, dry weather during flowering." }
+    ],
+    Brinjal: [
+        { name: "Fruit & Stem Blight", symptoms: [4,9], advice: "Remove and destroy infected fruit and stems promptly, and follow crop rotation." },
+        { name: "Bacterial Wilt", symptoms: [5,8], advice: "Use disease-free seedlings and avoid replanting brinjal in an infected field." }
+    ],
+    Okra: [
+        { name: "Yellow Vein Mosaic Virus", symptoms: [1,7], advice: "Focus on whitefly control and remove infected plants early." }
+    ],
+    Cauliflower: [
+        { name: "Black Rot", symptoms: [1,8], advice: "Use clean seed and crop rotation; avoid working in the field when leaves are wet." }
+    ],
+    Spinach: [
+        { name: "Downy Mildew", symptoms: [6], advice: "Increase spacing between plants and avoid overhead irrigation." }
+    ],
+    Turmeric: [
+        { name: "Rhizome Rot", symptoms: [8,9], advice: "Improve field drainage and sow disease-free rhizomes." },
+        { name: "Leaf Spot", symptoms: [1,10], advice: "Avoid dense sowing and remove infected leaves." }
+    ],
+    Ginger: [
+        { name: "Rhizome Rot", symptoms: [8,9], advice: "Sow on raised beds for better drainage." }
+    ],
+    Papaya: [
+        { name: "Papaya Ringspot Virus", symptoms: [7,10], advice: "Control aphids, since they spread this virus." },
+        { name: "Foot Rot", symptoms: [8], advice: "Don't let water collect at the base of the stem, and improve drainage." }
+    ],
+    Pomegranate: [
+        { name: "Bacterial Blight", symptoms: [1,4], advice: "Prune off infected branches and keep tools disinfected." }
+    ],
+    Guava: [
+        { name: "Anthracnose", symptoms: [4,9], advice: "Remove fallen and rotten fruit and improve air circulation in the orchard." }
+    ],
+    Apple: [
+        { name: "Apple Scab", symptoms: [1,10], advice: "Remove fallen infected leaves and improve air circulation through pruning." }
+    ],
+    Chrysanthemum: [
+        { name: "Leaf Spot", symptoms: [1,10], advice: "Avoid overhead watering and remove infected leaves." }
+    ],
+    Lily: [
+        { name: "Botrytis Blight (Gray Mold)", symptoms: [4,8], advice: "Improve air circulation and remove spent flowers regularly." }
+    ]
+};
+
+const cropNames = {
+    Tomato: "Tomato", Potato: "Potato", Wheat: "Wheat", Rice: "Rice", Cotton: "Cotton",
+    Sugarcane: "Sugarcane", Maize: "Maize", Soybean: "Soybean", Mustard: "Mustard",
+    Chilli: "Chilli", Mango: "Mango", Citrus: "Citrus", Grapes: "Grapes", Banana: "Banana",
+    Cabbage: "Cabbage", Rose: "Rose", Marigold: "Marigold", Jasmine: "Jasmine",
+    Groundnut: "Groundnut", Sunflower: "Sunflower", Barley: "Barley", Lentil: "Lentil",
+    Pea: "Pea", Brinjal: "Brinjal", Okra: "Okra", Cauliflower: "Cauliflower",
+    Spinach: "Spinach", Turmeric: "Turmeric", Ginger: "Ginger", Papaya: "Papaya",
+    Pomegranate: "Pomegranate", Guava: "Guava", Apple: "Apple", Chrysanthemum: "Chrysanthemum", Lily: "Lily"
+};
+
+function populateDiseaseCropSelect(){
+    const sel = document.getElementById("pd-crop");
+    if(!sel) return;
+    sel.innerHTML = Object.keys(diseaseDB).map(k => `<option value="${k}">${cropNames[k]}</option>`).join("");
+}
+
+function predictDisease() {
+    const cropEl = document.getElementById("pd-crop");
+    if(!cropEl) return;
+    const crop = cropEl.value;
+    const checked = Array.from(document.querySelectorAll('.symptom-grid input:checked')).map(c => parseInt(c.value));
+    const candidates = diseaseDB[crop] || [];
+
+    const box = document.getElementById("pd-result");
+    box.classList.remove("show","warn","bad");
+
+    if (checked.length === 0) {
+        document.getElementById("pd-title").textContent = "Select at least one symptom";
+        document.getElementById("pd-confidence").textContent = "";
+        document.getElementById("pd-desc").textContent = "Select the symptoms you're currently seeing in your " + cropNames[crop] + " crop, then check again.";
+        document.getElementById("pd-advice").textContent = "";
+        box.classList.add("show","warn");
+        return;
+    }
+
+    let best = null, bestScore = 0;
+    candidates.forEach(d => {
+        const overlap = d.symptoms.filter(s => checked.includes(s)).length;
+        if (overlap > bestScore) { bestScore = overlap; best = d; }
+    });
+
+    if (!best || bestScore === 0) {
+        document.getElementById("pd-title").textContent = "No clear match found";
+        document.getElementById("pd-confidence").textContent = "";
+        document.getElementById("pd-desc").textContent = "The selected symptoms don't clearly match any common disease of " + cropNames[crop] + ".";
+        document.getElementById("pd-advice").textContent = "Keep monitoring the crop, and if symptoms persist, consult your local agriculture extension office.";
+        box.classList.add("show","warn");
+        return;
+    }
+
+    const confidence = Math.min(95, Math.round((bestScore / best.symptoms.length) * 100));
+    document.getElementById("pd-title").textContent = "Possible match: " + best.name + " (" + cropNames[crop] + ")";
+    document.getElementById("pd-confidence").textContent = "Indicative confidence level: " + confidence + "%";
+    document.getElementById("pd-desc").textContent = "Matched symptoms: " + best.symptoms.filter(s=>checked.includes(s)).map(s=>symptomLabels[s]).join(", ") + ".";
+    document.getElementById("pd-advice").textContent = "Suggested action: " + best.advice;
+    box.classList.add("show");
+    if (confidence < 50) box.classList.add("warn");
+}
+
+/* ================= SOIL PREDICTOR ================= */
+const soilSuited = {
+    "Loamy": "wheat, vegetables, and most general crops",
+    "Sandy": "groundnut, millet, and watermelon",
+    "Clay": "rice and sugarcane",
+    "Silty": "rice and leafy vegetables",
+    "Black (Regur)": "cotton and soybean",
+    "Red": "groundnut, pulses, and millet",
+    "Laterite": "cashew, tea, and coffee",
+    "Alluvial": "wheat, rice, and sugarcane"
+};
+const soilTypeNames = {
+    "Loamy":"Loamy", "Sandy":"Sandy", "Clay":"Clay", "Silty":"Silty",
+    "Black (Regur)":"Black (Regur)", "Red":"Red", "Laterite":"Laterite", "Alluvial":"Alluvial"
+};
+const levelNames = { "Low":"Low", "Medium":"Medium", "High":"High" };
+
+function predictSoil() {
+    const ph = parseFloat(document.getElementById("soil-ph").value);
+    const moisture = parseFloat(document.getElementById("soil-moisture").value);
+    const n = document.getElementById("soil-n").value;
+    const p = document.getElementById("soil-p").value;
+    const k = document.getElementById("soil-k").value;
+    const type = document.getElementById("soil-type").value;
+
+    const box = document.getElementById("soil-result");
+    box.classList.remove("show","warn","bad");
+
+    let phRating, phTip;
+    if (ph < 5.5) { phRating = "Acidic"; phTip = "Consider applying agricultural lime to gradually raise the pH."; }
+    else if (ph < 6.5) { phRating = "Slightly acidic"; phTip = "Suitable for most crops with minor adjustment."; }
+    else if (ph <= 7.5) { phRating = "Neutral (suitable for most crops)"; phTip = "This pH range is suitable for the widest range of crops."; }
+    else if (ph <= 8.5) { phRating = "Slightly alkaline"; phTip = "Adding organic manure or compost can balance the pH over time."; }
+    else { phRating = "Alkaline"; phTip = "Consider gypsum and organic manure to correct high alkalinity."; }
+
+    let moistRating, moistTip;
+    if (moisture < 20) { moistRating = "Low / dry"; moistTip = "Irrigation may be needed soon."; }
+    else if (moisture <= 60) { moistRating = "Adequate"; moistTip = "Moisture level looks suitable for most crops."; }
+    else { moistRating = "High / waterlogging risk"; moistTip = "Improve drainage to protect roots from waterlogging damage."; }
+
+    const levels = [n,p,k];
+    const lowCount = levels.filter(l => l === "Low").length;
+    const highCount = levels.filter(l => l === "High").length;
+    let npkRating, npkTip;
+    if (lowCount >= 2) { npkRating = "Nutrient deficient"; npkTip = "Consider balanced fertilizer or organic manure to raise N-P-K levels."; }
+    else if (highCount >= 2) { npkRating = "Nutrient rich"; npkTip = "Avoid adding more fertilizer; excess nutrients can affect the crop and runoff."; }
+    else { npkRating = "Balanced"; npkTip = "Nutrient levels look reasonably balanced for general farming."; }
+
+    let severity = "show";
+    if (lowCount >= 2 || phRating === "Acidic" || phRating === "Alkaline" || moistRating !== "Adequate") severity = "show warn";
+    if (lowCount === 3 && (phRating === "Acidic" || phRating === "Alkaline")) severity = "show bad";
+
+    document.getElementById("soil-title").textContent = "Soil Summary — " + soilTypeNames[type] + " Soil";
+    document.getElementById("soil-ph-line").textContent = "pH " + ph + ": " + phRating + ". " + phTip;
+    document.getElementById("soil-moisture-line").textContent = "Moisture " + moisture + "%: " + moistRating + ". " + moistTip;
+    document.getElementById("soil-npk-line").textContent = "Nutrients (N/P/K: " + levelNames[n] + "/" + levelNames[p] + "/" + levelNames[k] + "): " + npkRating + ". " + npkTip;
+    document.getElementById("soil-suited-line").textContent = soilTypeNames[type] + " soil is typically suited for: " + soilSuited[type] + ".";
+    document.getElementById("soil-tip").textContent = "This is a general, indicative assessment — contact a soil testing lab for precise fertilizer recommendations.";
+    box.className = "result-box " + severity;
+}
+
+/* ================= YIELD CALCULATOR ================= */
+const yieldDefaults = {
+    "Wheat": 18, "Rice": 22, "Maize": 20, "Soybean": 10, "Cotton": 6,
+    "Sugarcane": 320, "Potato": 80, "Onion": 100, "Mustard": 8, "Chickpea": 6,
+    "Tomato": 90, "Rose": 40, "Marigold": 60, "Jasmine": 8,
+    "Groundnut": 9, "Sunflower": 7, "Barley": 16, "Lentil": 5, "Pea": 12,
+    "Brinjal": 85, "Okra": 45, "Cauliflower": 70, "Spinach": 40,
+    "Turmeric": 60, "Ginger": 55, "Papaya": 250, "Pomegranate": 40, "Guava": 60
+};
+
+function populateCropSelects() {
+    const crops = Object.keys(yieldDefaults);
+    ["yc-crop","pc-crop"].forEach(id => {
+        const sel = document.getElementById(id);
+        if(!sel) return;
+        sel.innerHTML = crops.map(c => `<option value="${c}">${c}</option>`).join("");
+    });
+    fillYieldDefault();
+}
+
+function fillYieldDefault() {
+    const cropEl = document.getElementById("yc-crop");
+    if(!cropEl) return;
+    const crop = cropEl.value;
+    document.getElementById("yc-rate").value = yieldDefaults[crop];
+}
+
+let lastYieldQuintal = null;
+
+function calculateYield() {
+    const area = parseFloat(document.getElementById("yc-area").value) || 0;
+    const rate = parseFloat(document.getElementById("yc-rate").value) || 0;
+    const totalQuintal = area * rate;
+    lastYieldQuintal = totalQuintal;
+
+    document.getElementById("yc-quintal").textContent = totalQuintal.toFixed(1) + " quintals";
+    document.getElementById("yc-kg").textContent = (totalQuintal * 100).toLocaleString("en-IN") + " kg";
+    document.getElementById("yc-tonne").textContent = (totalQuintal / 10).toFixed(2) + " tonnes";
+    document.getElementById("yc-result").classList.add("show");
+}
+
+function pullYieldIntoProfit() {
+    if (lastYieldQuintal === null) { calculateYield(); }
+    const el = document.getElementById("pc-yield");
+    if(el) el.value = lastYieldQuintal.toFixed(1);
+}
+
+function pullPriceIntoProfit() {
+    const cropEl = document.getElementById("pc-crop");
+    if(!cropEl) return;
+    const crop = cropEl.value;
+    const entry = marketPrices.find(m => m.name === crop);
+    if (entry) document.getElementById("pc-price").value = entry.price;
+}
+
+/* ================= PROFIT CALCULATOR ================= */
+function calculateProfit() {
+    const expense = parseFloat(document.getElementById("pc-expense").value) || 0;
+    const yieldQ = parseFloat(document.getElementById("pc-yield").value) || 0;
+    const price = parseFloat(document.getElementById("pc-price").value) || 0;
+
+    const revenue = yieldQ * price;
+    const profit = revenue - expense;
+    const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+
+    document.getElementById("pc-out-expense").textContent = "₹" + expense.toLocaleString("en-IN");
+    document.getElementById("pc-out-revenue").textContent = "₹" + revenue.toLocaleString("en-IN");
+    document.getElementById("pc-pl-label").textContent = profit >= 0 ? "Net Profit" : "Net Loss";
+    document.getElementById("pc-out-profit").textContent = "₹" + Math.abs(profit).toLocaleString("en-IN");
+    document.getElementById("pc-out-margin").textContent = margin.toFixed(1) + "%";
+
+    const box = document.getElementById("pc-result");
+    box.className = "result-box show " + (profit >= 0 ? "" : "bad");
+}
+
+/* ================= MARKET PRICES ================= */
+const marketPrices = [
+    { name: "Wheat", icon: "🌾", market: "Delhi", price: 2450, cat: "crop" },
+    { name: "Rice", icon: "🌾", market: "Delhi", price: 3200, cat: "crop" },
+    { name: "Soybean", icon: "🫘", market: "Madhya Pradesh", price: 4650, cat: "crop" },
+    { name: "Maize", icon: "🌽", market: "Maharashtra", price: 2180, cat: "crop" },
+    { name: "Potato", icon: "🥔", market: "Uttar Pradesh", price: 1750, cat: "crop" },
+    { name: "Onion", icon: "🧅", market: "Maharashtra", price: 2600, cat: "crop" },
+    { name: "Cotton", icon: "☁️", market: "Gujarat", price: 7200, cat: "crop" },
+    { name: "Sugarcane", icon: "🎋", market: "Uttar Pradesh", price: 340, cat: "crop" },
+    { name: "Mustard", icon: "🌼", market: "Rajasthan", price: 5450, cat: "crop" },
+    { name: "Chickpea", icon: "🫛", market: "Madhya Pradesh", price: 5200, cat: "crop" },
+    { name: "Tomato", icon: "🍅", market: "Karnataka", price: 1400, cat: "crop" },
+    { name: "Groundnut", icon: "🥜", market: "Gujarat", price: 5800, cat: "crop" },
+    { name: "Sunflower", icon: "🌻", market: "Karnataka", price: 6300, cat: "crop" },
+    { name: "Barley", icon: "🌾", market: "Rajasthan", price: 1900, cat: "crop" },
+    { name: "Lentil", icon: "🫘", market: "Uttar Pradesh", price: 6100, cat: "crop" },
+    { name: "Pea", icon: "🟢", market: "Madhya Pradesh", price: 3100, cat: "crop" },
+    { name: "Brinjal", icon: "🍆", market: "West Bengal", price: 1500, cat: "crop" },
+    { name: "Okra", icon: "🫛", market: "Bihar", price: 2200, cat: "crop" },
+    { name: "Cauliflower", icon: "🥦", market: "Haryana", price: 1300, cat: "crop" },
+    { name: "Spinach", icon: "🥬", market: "Punjab", price: 1600, cat: "crop" },
+    { name: "Turmeric", icon: "🟡", market: "Telangana", price: 8200, cat: "crop" },
+    { name: "Ginger", icon: "🫚", market: "Kerala", price: 9500, cat: "crop" },
+    { name: "Papaya", icon: "🌴", market: "Andhra Pradesh", price: 1450, cat: "crop" },
+    { name: "Pomegranate", icon: "🔴", market: "Maharashtra", price: 9800, cat: "crop" },
+    { name: "Guava", icon: "🟢", market: "Uttar Pradesh", price: 2400, cat: "crop" },
+    { name: "Rose", icon: "🌹", market: "Karnataka", price: 8000, cat: "flower" },
+    { name: "Marigold", icon: "🌼", market: "Tamil Nadu", price: 3500, cat: "flower" },
+    { name: "Jasmine", icon: "🌸", market: "Tamil Nadu", price: 18000, cat: "flower" }
+];
+
+function renderMarket() {
+    const body = document.getElementById("market-body");
+    if(!body) return;
+    body.innerHTML = marketPrices.map(m => {
+        const trendClass = m.change > 0 ? "increase" : (m.change < 0 ? "decrease" : "stable");
+        const trendText = m.change > 0 ? "▲ Up" : (m.change < 0 ? "▼ Down" : "— Stable");
+        const changeText = (m.change > 0 ? "+₹" : (m.change < 0 ? "-₹" : "₹")) + Math.abs(m.change);
+        return `<tr data-cat="${m.cat}">
+            <td class="crop-name">${m.icon} ${m.name}</td>
+            <td>${m.market}</td>
+            <td class="price">₹${m.price.toLocaleString("en-IN")}</td>
+            <td class="${trendClass}">${changeText}</td>
+            <td class="${trendClass}">${trendText}</td>
+        </tr>`;
+    }).join("");
+}
+
+function refreshMarket() {
+    marketPrices.forEach(m => {
+        const pct = (Math.random() * 4 - 1.5) / 100;
+        const change = Math.round(m.price * pct);
+        m.price = Math.max(1, m.price + change);
+        m.change = change;
+    });
+    renderMarket();
+    filterMarket(currentFilter, document.querySelector(`.market-tab[data-cat="${currentFilter}"]`));
+    const now = new Date();
+    const dateEl = document.getElementById("marketDate");
+    if(dateEl){
+        dateEl.textContent = "Updated: " + now.toLocaleString("en-IN", {
+            day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit"
+        });
+    }
+}
+
+let currentFilter = "all";
+function filterMarket(cat, el) {
+    currentFilter = cat;
+    document.querySelectorAll(".market-tab").forEach(t => t.classList.remove("active"));
+    if (el) el.classList.add("active");
+    document.querySelectorAll("#market-body tr").forEach(row => {
+        row.style.display = (cat === "all" || row.dataset.cat === cat) ? "" : "none";
+    });
+}
+
+/* =====================================================
+   PHOTO UPLOAD + CAMERA (reusable across disease/soil pages)
+   Call setupPhotoTool('pd') or setupPhotoTool('soil') on page load.
+   Expects elements with ids: {prefix}-file-input, {prefix}-camera-btn,
+   {prefix}-upload-btn, {prefix}-video, {prefix}-canvas, {prefix}-snap-btn,
+   {prefix}-stage, {prefix}-preview, {prefix}-remove-btn, {prefix}-camera-wrap,
+   {prefix}-photo-meta
+   ===================================================== */
+function setupPhotoTool(prefix){
+    const fileInput = document.getElementById(prefix + "-file-input");
+    const uploadBtn = document.getElementById(prefix + "-upload-btn");
+    const cameraBtn = document.getElementById(prefix + "-camera-btn");
+    const snapBtn   = document.getElementById(prefix + "-snap-btn");
+    const cancelCameraBtn = document.getElementById(prefix + "-cancel-camera-btn");
+    const video     = document.getElementById(prefix + "-video");
+    const canvas    = document.getElementById(prefix + "-canvas");
+    const stage     = document.getElementById(prefix + "-stage");
+    const cameraWrap= document.getElementById(prefix + "-camera-wrap");
+    const preview   = document.getElementById(prefix + "-preview");
+    const removeBtn = document.getElementById(prefix + "-remove-btn");
+    const meta      = document.getElementById(prefix + "-photo-meta");
+
+    if(!fileInput) return; // this page doesn't include the photo tool
+
+    let stream = null;
+
+    function showPreview(dataUrl, label){
+        preview.src = dataUrl;
+        stage.classList.add("show");
+        if(cameraWrap) cameraWrap.style.display = "none";
+        if(meta) meta.innerHTML = "<strong>Photo added:</strong> " + label + " — select symptoms/readings below to complete the check.";
+        stopCamera();
+    }
+
+    function stopCamera(){
+        if(stream){
+            stream.getTracks().forEach(t => t.stop());
+            stream = null;
+        }
+        if(cameraWrap) cameraWrap.style.display = "none";
+    }
+
+    if(uploadBtn){
+        uploadBtn.addEventListener("click", () => fileInput.click());
+    }
+    fileInput.addEventListener("change", (e) => {
+        const file = e.target.files && e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => showPreview(ev.target.result, file.name || "Uploaded photo");
+        reader.readAsDataURL(file);
+    });
+
+    if(cameraBtn){
+        cameraBtn.addEventListener("click", async () => {
+            if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+                alert("This browser doesn't support direct camera access. Please use the 'Upload Photo' option.");
+                return;
+            }
+            try{
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                video.srcObject = stream;
+                cameraWrap.style.display = "block";
+                stage.classList.remove("show");
+                await video.play();
+            }catch(err){
+                alert("Couldn't access the camera. Please allow permission or try the 'Upload Photo' option.");
+            }
+        });
+    }
+
+    if(snapBtn){
+        snapBtn.addEventListener("click", () => {
+            if(!stream) return;
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext("2d").drawImage(video, 0, 0);
+            const dataUrl = canvas.toDataURL("image/png");
+            showPreview(dataUrl, "Photo taken with camera");
+        });
+    }
+
+    if(cancelCameraBtn){
+        cancelCameraBtn.addEventListener("click", stopCamera);
+    }
+
+    if(removeBtn){
+        removeBtn.addEventListener("click", () => {
+            preview.src = "";
+            stage.classList.remove("show");
+            fileInput.value = "";
+            if(meta) meta.textContent = "";
+        });
+    }
+}
+
+/* ================= INIT (runs on every page; each fn no-ops if elements absent) ================= */
+document.addEventListener("DOMContentLoaded", () => {
+    populateDiseaseCropSelect();
+    populateCropSelects();
+    refreshMarket();
+    setupPhotoTool("pd");
+    setupPhotoTool("soil");
+
+    const now = new Date();
+    const dateEl = document.getElementById("marketDate");
+    if(dateEl){
+        dateEl.textContent = "Updated: " + now.toLocaleString("en-IN", {
+            day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit"
+        });
+    }
+});
+
+
+/* ================= SPA ROUTER ================= */
+const pageMap = {
+    "home.html": "home",
+    "about.html": "about",
+    "diseases.html": "diseases",
+    "disease-predictor.html": "predictor",
+    "soil-predictor.html": "soil",
+    "yield-calculator.html": "yield",
+    "profit-calculator.html": "profit",
+    "market.html": "market"
+};
+
+function showPage(pageId, skipHash){
+    document.querySelectorAll(".page").forEach(el => el.classList.remove("active"));
+    const target = document.getElementById("page-" + pageId);
+    if(target) target.classList.add("active");
+    document.querySelectorAll(".main-nav a").forEach(a => {
+        a.classList.toggle("active", a.dataset.page === pageId);
+    });
+    if(!skipHash) location.hash = pageId;
+    window.scrollTo({top:0, behavior:"instant"});
+}
+
+document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[href]");
+    if(!a) return;
+    const href = a.getAttribute("href");
+    if(pageMap[href]){
+        e.preventDefault();
+        showPage(pageMap[href]);
+    }
+});
+
+window.addEventListener("hashchange", () => {
+    const id = location.hash.replace("#","") || "home";
+    if(document.getElementById("page-" + id)) showPage(id, true);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+    const id = location.hash.replace("#","") || "home";
+    showPage(document.getElementById("page-" + id) ? id : "home", true);
+});
+
+document.getElementById("disease-filter-bar").addEventListener("click", (e) => {
+    const btn = e.target.closest(".filter-chip");
+    if(!btn) return;
+    document.querySelectorAll("#disease-filter-bar .filter-chip").forEach(c => c.classList.remove("active"));
+    btn.classList.add("active");
+    const cat = btn.dataset.cat;
+    document.querySelectorAll("#disease-grid .disease-card").forEach(card => {
+        card.style.display = (cat === "all" || card.dataset.cat === cat) ? "" : "none";
+    });
+});
+
+</script>
+</html>
