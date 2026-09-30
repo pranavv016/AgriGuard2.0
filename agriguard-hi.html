@@ -996,6 +996,15 @@ footer{
             <p id="pd-confidence"></p>
             <p id="pd-desc"></p>
             <p id="pd-advice"></p>
+
+<div id="pd-knowledge" class="pd-knowledge" style="display:none;">
+    <div><strong>कारण:</strong> <span id="pd-cause"></span></div>
+    <div><strong>लक्षण:</strong> <span id="pd-kb-symptoms"></span></div>
+    <div><strong>उपचार:</strong> <span id="pd-treatment"></span></div>
+    <div><strong>रोकथाम:</strong> <span id="pd-prevention"></span></div>
+    <div><strong>गंभीरता:</strong> <span id="pd-severity"></span></div>
+</div>
+
             <p style="font-size:12.5px;color:#8b968b;margin-top:10px;">
                 यह केवल शैक्षिक जानकारी है, निदान नहीं। उपचार का निर्णय लेने से पहले कृपया किसी योग्य
                 कृषि अधिकारी से पुष्टि करें।
@@ -1408,47 +1417,160 @@ function populateDiseaseCropSelect(){
     sel.innerHTML = Object.keys(diseaseDB).map(k => `<option value="${k}">${cropNamesHindi[k]}</option>`).join("");
 }
 
+
+/* ============================================================
+   KNOWLEDGE BASE LOOKUP
+   Does not replace the existing diseaseDB.
+   ============================================================ */
+
+function findAgriGuardKnowledge(crop, diseaseName) {
+    if (!agriGuardKnowledgeBase || !Array.isArray(agriGuardKnowledgeBase.diseases)) {
+        return null;
+    }
+
+    const cropKey = String(crop || "").trim().toLowerCase();
+    const diseaseKey = String(diseaseName || "").trim().toLowerCase();
+
+    return agriGuardKnowledgeBase.diseases.find(d => {
+        const dbCrop = String(d.crop_name || "").trim().toLowerCase();
+        const dbDisease = String(d.standard_name || "").trim().toLowerCase();
+
+        return dbCrop === cropKey && (
+            dbDisease === diseaseKey ||
+            dbDisease.includes(diseaseKey) ||
+            diseaseKey.includes(dbDisease)
+        );
+    }) || null;
+}
+
+
 function predictDisease() {
     const cropEl = document.getElementById("pd-crop");
     if(!cropEl) return;
+
     const crop = cropEl.value;
-    const checked = Array.from(document.querySelectorAll('.symptom-grid input:checked')).map(c => parseInt(c.value));
+    const checked = Array.from(
+        document.querySelectorAll('.symptom-grid input:checked')
+    ).map(c => parseInt(c.value));
+
     const candidates = diseaseDB[crop] || [];
 
     const box = document.getElementById("pd-result");
+    const knowledgeBox = document.getElementById("pd-knowledge");
+
     box.classList.remove("show","warn","bad");
 
+    if (knowledgeBox) {
+        knowledgeBox.style.display = "none";
+    }
+
     if (checked.length === 0) {
-        document.getElementById("pd-title").textContent = "कम से कम एक लक्षण चुनें";
+        document.getElementById("pd-title").textContent =
+            "कम से कम एक लक्षण चुनें";
+
         document.getElementById("pd-confidence").textContent = "";
-        document.getElementById("pd-desc").textContent = cropNamesHindi[crop] + " की फ़सल में अभी दिख रहे लक्षण चुनें, फिर दोबारा जाँचें।";
+
+        document.getElementById("pd-desc").textContent =
+            cropNamesHindi[crop] +
+            " की फ़सल में अभी दिख रहे लक्षण चुनें, फिर दोबारा जाँचें।";
+
         document.getElementById("pd-advice").textContent = "";
+
         box.classList.add("show","warn");
         return;
     }
 
-    let best = null, bestScore = 0;
+    let best = null;
+    let bestScore = 0;
+
     candidates.forEach(d => {
-        const overlap = d.symptoms.filter(s => checked.includes(s)).length;
-        if (overlap > bestScore) { bestScore = overlap; best = d; }
+        const overlap = d.symptoms.filter(
+            s => checked.includes(s)
+        ).length;
+
+        if (overlap > bestScore) {
+            bestScore = overlap;
+            best = d;
+        }
     });
 
     if (!best || bestScore === 0) {
-        document.getElementById("pd-title").textContent = "कोई स्पष्ट मिलान नहीं मिला";
+        document.getElementById("pd-title").textContent =
+            "कोई स्पष्ट मिलान नहीं मिला";
+
         document.getElementById("pd-confidence").textContent = "";
-        document.getElementById("pd-desc").textContent = "चुने गए लक्षण " + cropNamesHindi[crop] + " के किसी सामान्य रोग से स्पष्ट रूप से मेल नहीं खाते।";
-        document.getElementById("pd-advice").textContent = "फ़सल पर नज़र बनाए रखें, और अगर लक्षण जारी रहें तो अपने स्थानीय कृषि विस्तार कार्यालय से सलाह लें।";
+
+        document.getElementById("pd-desc").textContent =
+            "चुने गए लक्षण " +
+            cropNamesHindi[crop] +
+            " के किसी सामान्य रोग से स्पष्ट रूप से मेल नहीं खाते।";
+
+        document.getElementById("pd-advice").textContent =
+            "फ़सल पर नज़र बनाए रखें, और अगर लक्षण जारी रहें तो अपने स्थानीय कृषि विस्तार कार्यालय से सलाह लें।";
+
         box.classList.add("show","warn");
         return;
     }
 
-    const confidence = Math.min(95, Math.round((bestScore / best.symptoms.length) * 100));
-    document.getElementById("pd-title").textContent = "संभावित मिलान: " + best.name + " (" + cropNamesHindi[crop] + ")";
-    document.getElementById("pd-confidence").textContent = "संकेतात्मक विश्वास स्तर: " + confidence + "%";
-    document.getElementById("pd-desc").textContent = "मिलान किए गए लक्षण: " + best.symptoms.filter(s=>checked.includes(s)).map(s=>symptomLabels[s]).join(", ") + "।";
-    document.getElementById("pd-advice").textContent = "सुझाया गया उपाय: " + best.advice;
+    const confidence = Math.min(
+        95,
+        Math.round((bestScore / best.symptoms.length) * 100)
+    );
+
+    document.getElementById("pd-title").textContent =
+        "संभावित मिलान: " +
+        best.name +
+        " (" +
+        cropNamesHindi[crop] +
+        ")";
+
+    document.getElementById("pd-confidence").textContent =
+        "संकेतात्मक विश्वास स्तर: " +
+        confidence +
+        "%";
+
+    document.getElementById("pd-desc").textContent =
+        "मिलान किए गए लक्षण: " +
+        best.symptoms
+            .filter(s => checked.includes(s))
+            .map(s => symptomLabels[s])
+            .join(", ") +
+        "।";
+
+    document.getElementById("pd-advice").textContent =
+        "सुझाया गया उपाय: " +
+        best.advice;
+
+    /*
+     * नया: मानकीकृत AgriGuard ज्ञान आधार से जानकारी लें।
+     * मौजूदा symptom matching को बदला नहीं गया है।
+     */
+    const knowledge = findAgriGuardKnowledge(crop, best.name);
+
+    if (knowledge && knowledgeBox) {
+        document.getElementById("pd-cause").textContent =
+            knowledge.cause || "उपलब्ध नहीं";
+
+        document.getElementById("pd-kb-symptoms").textContent =
+            knowledge.symptoms || "उपलब्ध नहीं";
+
+        document.getElementById("pd-treatment").textContent =
+            knowledge.treatment || "उपलब्ध नहीं";
+
+        document.getElementById("pd-prevention").textContent =
+            knowledge.prevention || "उपलब्ध नहीं";
+
+        document.getElementById("pd-severity").textContent =
+            knowledge.severity || "उपलब्ध नहीं";
+
+        knowledgeBox.style.display = "block";
+    }
+
     box.classList.add("show");
-    if (confidence < 50) box.classList.add("warn");
+
+    if (confidence < 50) {
+        box.classList.add("warn");
+    }
 }
 
 /* ================= SOIL PREDICTOR ================= */
@@ -1831,6 +1953,50 @@ document.getElementById("disease-filter-bar").addEventListener("click", (e) => {
         card.style.display = (cat === "all" || card.dataset.cat === cat) ? "" : "none";
     });
 });
+
+
+
+/* ============================================================
+   AGRIGUARD KNOWLEDGE BASE
+   Loaded from AgriGuard_knowledge_base.json
+   ============================================================ */
+
+let agriGuardKnowledgeBase = {
+    diseases: [],
+    needs_identification: [],
+    insect_pest: []
+};
+
+async function loadAgriGuardKnowledgeBase() {
+    try {
+        const response = await fetch("./AgriGuard_knowledge_base.json", {
+            cache: "no-cache"
+        });
+
+        if (!response.ok) {
+            throw new Error("Knowledge base HTTP " + response.status);
+        }
+
+        agriGuardKnowledgeBase = await response.json();
+
+        console.log(
+            "AgriGuard knowledge base loaded:",
+            agriGuardKnowledgeBase.diseases.length,
+            "diseases;",
+            agriGuardKnowledgeBase.needs_identification.length,
+            "identification records;",
+            agriGuardKnowledgeBase.insect_pest.length,
+            "insect/pest records."
+        );
+
+        return true;
+    } catch (error) {
+        console.error("AgriGuard knowledge base failed to load:", error);
+        return false;
+    }
+}
+
+loadAgriGuardKnowledgeBase();
 
 </script>
 </body>
