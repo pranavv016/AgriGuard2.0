@@ -1848,6 +1848,12 @@ function showPage(pageId, skipHash){
 document.addEventListener("click", (e) => {
     const a = e.target.closest("a[href]");
     if(!a) return;
+
+    // Language switch must navigate to the separate English portal.
+    if(a.classList.contains("lang-switch")){
+        return;
+    }
+
     const href = a.getAttribute("href");
     if(pageMap[href]){
         e.preventDefault();
