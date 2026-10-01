@@ -107,6 +107,33 @@
       "treatment": "Use healthy seed and suitable varieties, maintain balanced nutrition and manage infected crop residues. Monitor lower leaves early. If fungicide treatment is required, use a currently recommended wheat fungicide according to the local agricultural advisory and current label.",
       "prevention": "Use healthy seed and suitable varieties, maintain balanced nutrition, manage infected crop residues, avoid excessive crop density, and monitor lower leaves early in the season.",
       "severity": "Moderate"
+    },
+    {
+      "crop_name": "Potato",
+      "standard_name": "Potato early blight",
+      "cause": "Fungal disease caused mainly by Alternaria solani.",
+      "symptoms": "Small dark brown to black spots develop on older leaves and gradually enlarge into circular lesions with concentric rings. Severe infection can cause yellowing, leaf drop, and reduced tuber yield.",
+      "treatment": "Remove severely infected plant material where practical and improve field sanitation. Use locally recommended fungicides for early blight when disease pressure warrants treatment, following the current label and local agricultural advisory.",
+      "prevention": "Use healthy seed tubers, maintain balanced plant nutrition, avoid prolonged leaf wetness, provide adequate spacing and field sanitation, and rotate crops where practical.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Potato",
+      "standard_name": "Potato late blight",
+      "cause": "Disease caused by the oomycete Phytophthora infestans.",
+      "symptoms": "Dark, water-soaked lesions appear on leaves and stems, often expanding rapidly under cool and humid conditions. White fuzzy growth may develop on the underside of infected leaves, and tubers can develop dark brown to reddish-brown internal rot.",
+      "treatment": "Remove and properly dispose of severely infected plant material where practical. Improve field drainage and reduce prolonged leaf wetness. Use locally recommended late-blight fungicides when disease pressure warrants treatment, following the current label and local agricultural advisory.",
+      "prevention": "Use healthy certified seed tubers, provide good field drainage, avoid excessive irrigation and prolonged leaf wetness, maintain adequate spacing, monitor during cool humid weather, and remove infected material promptly.",
+      "severity": "High"
+    },
+    {
+      "crop_name": "Potato",
+      "standard_name": "Potato tuber rot",
+      "cause": "Tuber rot can be caused by several fungal or bacterial pathogens, particularly when tubers are injured, poorly dried, or stored under unsuitable conditions.",
+      "symptoms": "Soft or firm brown, dark, or discolored areas develop on potato tubers. Rot may progress internally, sometimes accompanied by softening, decay, unpleasant odour, or secondary infection.",
+      "treatment": "Remove and separate rotten or damaged tubers. Dry healthy tubers thoroughly before storage and maintain suitable storage conditions with good ventilation. Avoid storing injured or cut tubers with healthy produce.",
+      "prevention": "Handle tubers carefully to prevent wounds, harvest under suitable conditions, allow tubers to dry and cure before storage, maintain clean and well-ventilated storage conditions, and regularly remove damaged or decaying tubers.",
+      "severity": "Moderate to High"
     }
   ],
   "needs_identification": [
