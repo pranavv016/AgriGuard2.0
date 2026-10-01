@@ -2709,11 +2709,75 @@ connectAgriGuardPhotoAI();
     speak.addEventListener("click", () => {
 
         const activePage =
-            document.querySelector(".page.active") ||
-            document.body;
+            document.querySelector(".page.active");
+
+        if(!activePage){
+            setStatus(
+                isHindi
+                    ? "परिणाम उपलब्ध नहीं है"
+                    : "No result available"
+            );
+            return;
+        }
+
+        let resultElement = null;
+
+        /*
+         * Only read results from:
+         * 1. Disease prediction
+         * 2. Yield calculator
+         * 3. Profit calculator
+         */
+
+        const pageId = activePage.id || "";
+
+        if(pageId.includes("predictor")){
+            resultElement =
+                activePage.querySelector(
+                    "#prediction-result, " +
+                    "#predictionResult, " +
+                    "#result, " +
+                    ".prediction-result, " +
+                    ".result-card, " +
+                    ".prediction-card"
+                );
+        }
+
+        else if(pageId.includes("yield")){
+            resultElement =
+                activePage.querySelector(
+                    "#yield-result, " +
+                    "#yieldResult, " +
+                    ".yield-result, " +
+                    ".calculator-result, " +
+                    ".result-card"
+                );
+        }
+
+        else if(pageId.includes("profit")){
+            resultElement =
+                activePage.querySelector(
+                    "#profit-result, " +
+                    "#profitResult, " +
+                    ".profit-result, " +
+                    ".calculator-result, " +
+                    ".result-card"
+                );
+        }
+
+        if(!resultElement){
+
+            setStatus(
+                isHindi
+                    ? "पहले परिणाम निकालें"
+                    : "Calculate or predict a result first"
+            );
+
+            return;
+        }
 
         const text =
-            activePage.innerText
+            resultElement.innerText
                 .replace(/\s+/g," ")
                 .trim()
                 .slice(0,3500);
@@ -2722,8 +2786,8 @@ connectAgriGuardPhotoAI();
 
             setStatus(
                 isHindi
-                    ? "पढ़ने के लिए टेक्स्ट नहीं है"
-                    : "No text to read"
+                    ? "परिणाम उपलब्ध नहीं है"
+                    : "No result available"
             );
 
             return;
@@ -2733,8 +2797,8 @@ connectAgriGuardPhotoAI();
 
         setStatus(
             isHindi
-                ? "पेज पढ़ रहा हूँ…"
-                : "Reading page…"
+                ? "परिणाम पढ़ रहा हूँ…"
+                : "Reading result…"
         );
     });
 
