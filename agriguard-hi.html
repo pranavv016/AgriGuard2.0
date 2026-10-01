@@ -384,6 +384,73 @@ footer{
 .page{ display:none; }
 .page.active{ display:block; }
 
+
+
+/* ================= VOICE ASSISTANT ================= */
+.voice-assistant{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:1000;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:7px;
+    box-shadow:0 8px 24px rgba(34,48,30,.16);
+}
+.voice-btn{
+    width:42px;
+    height:42px;
+    border:0;
+    border-radius:50%;
+    background:var(--green-deep);
+    color:#fff;
+    cursor:pointer;
+    font-size:19px;
+    display:grid;
+    place-items:center;
+}
+.voice-btn:hover{
+    background:var(--green);
+}
+.voice-btn.listening{
+    background:var(--clay);
+    animation:voicePulse 1s infinite;
+}
+.voice-speak-btn{
+    border:1.5px solid var(--green-deep);
+    background:#fff;
+    color:var(--green-deep);
+    border-radius:999px;
+    padding:8px 12px;
+    cursor:pointer;
+    font-weight:700;
+}
+.voice-status{
+    max-width:180px;
+    font-size:12px;
+    color:var(--ink-soft);
+    padding:0 4px;
+}
+@keyframes voicePulse{
+    50%{
+        transform:scale(1.08);
+        opacity:.72;
+    }
+}
+@media(max-width:640px){
+    .voice-assistant{
+        right:12px;
+        bottom:12px;
+    }
+    .voice-status{
+        display:none;
+    }
+}
+
 </style>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
 </head>
@@ -2322,5 +2389,352 @@ function connectAgriGuardPhotoAI() {
 connectAgriGuardPhotoAI();
 </script>
 
+
+
+<div class="voice-assistant" aria-label="AgriGuard voice assistant">
+    <span class="voice-status" id="voice-status">आवाज़ तैयार</span>
+
+    <button
+        class="voice-btn"
+        id="voice-mic-btn"
+        type="button"
+        aria-label="आवाज़ से इनपुट"
+        title="आवाज़ से इनपुट">
+        🎤
+    </button>
+
+    <button
+        class="voice-speak-btn"
+        id="voice-speak-btn"
+        type="button"
+        aria-label="पेज सुनें"
+        title="पेज सुनें">
+        🔊 सुनें
+    </button>
+</div>
+
 </body>
+
+
+<script>
+/* ============================================================
+   AGRIGUARD VOICE ASSISTANT
+   Browser Web Speech API — no external service/API key required
+   ============================================================ */
+(function(){
+
+    const isHindi =
+        document.documentElement.lang.toLowerCase().startsWith("hi");
+
+    const speechLang = isHindi ? "hi-IN" : "en-IN";
+
+    const SR =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    const mic =
+        document.getElementById("voice-mic-btn");
+
+    const speak =
+        document.getElementById("voice-speak-btn");
+
+    const status =
+        document.getElementById("voice-status");
+
+    if(!mic || !speak){
+        return;
+    }
+
+    function setStatus(text){
+        if(status){
+            status.textContent = text;
+        }
+    }
+
+    function speakText(text){
+
+        if(!("speechSynthesis" in window)){
+            setStatus(
+                isHindi
+                    ? "ब्राउज़र आवाज़ आउटपुट नहीं देता"
+                    : "Speech output unavailable"
+            );
+            return;
+        }
+
+        window.speechSynthesis.cancel();
+
+        const utterance =
+            new SpeechSynthesisUtterance(text);
+
+        utterance.lang = speechLang;
+        utterance.rate = 0.95;
+        utterance.pitch = 1;
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function runVoiceCommand(text){
+
+        const q =
+            text.toLowerCase().trim();
+
+        const commands = isHindi ? [
+
+            {keys:["होम","मुख्य पृष्ठ"], id:"home"},
+
+            {keys:["रोग","बीमारी","डिजीज"], id:"diseases"},
+
+            {keys:[
+                "रोग जांच",
+                "बीमारी जांच",
+                "डिजीज चेक"
+            ], id:"predictor"},
+
+            {keys:["उपज","यील्ड"], id:"yield"},
+
+            {keys:[
+                "लाभ",
+                "मुनाफा",
+                "प्रॉफिट"
+            ], id:"profit"},
+
+            {keys:[
+                "बाज़ार",
+                "बाजार",
+                "मंडी",
+                "मार्केट"
+            ], id:"market"},
+
+            {keys:[
+                "हमारे बारे में",
+                "अबाउट"
+            ], id:"about"}
+
+        ] : [
+
+            {keys:["home","main page"], id:"home"},
+
+            {keys:["disease","diseases"], id:"diseases"},
+
+            {keys:[
+                "disease check",
+                "disease predictor"
+            ], id:"predictor"},
+
+            {keys:[
+                "yield",
+                "yield calculator"
+            ], id:"yield"},
+
+            {keys:[
+                "profit",
+                "profit calculator"
+            ], id:"profit"},
+
+            {keys:[
+                "market",
+                "market prices",
+                "mandi"
+            ], id:"market"},
+
+            {keys:[
+                "about",
+                "about us"
+            ], id:"about"}
+        ];
+
+        for(const command of commands){
+
+            if(
+                command.keys.some(
+                    k => q.includes(k)
+                )
+            ){
+
+                if(typeof showPage === "function"){
+
+                    showPage(command.id);
+
+                    setStatus(
+                        isHindi
+                            ? "पेज खोला गया"
+                            : "Page opened"
+                    );
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    if(!SR){
+
+        mic.disabled = true;
+
+        mic.title =
+            isHindi
+                ? "यह ब्राउज़र voice input सपोर्ट नहीं करता"
+                : "This browser does not support voice input";
+
+        setStatus(
+            isHindi
+                ? "Voice input उपलब्ध नहीं"
+                : "Voice input unavailable"
+        );
+
+    }else{
+
+        const recognition = new SR();
+
+        recognition.lang = speechLang;
+        recognition.interimResults = false;
+        recognition.continuous = false;
+        recognition.maxAlternatives = 1;
+
+        mic.addEventListener("click", () => {
+
+            try{
+
+                recognition.start();
+
+                mic.classList.add("listening");
+
+                setStatus(
+                    isHindi
+                        ? "सुन रहा हूँ…"
+                        : "Listening…"
+                );
+
+            }catch(e){}
+        });
+
+        recognition.onresult = (event) => {
+
+            const text =
+                event.results[0][0]
+                    .transcript
+                    .trim();
+
+            const active =
+                document.activeElement;
+
+            const editable =
+                active &&
+                (
+                    active.tagName === "INPUT" ||
+                    active.tagName === "TEXTAREA"
+                ) &&
+                !active.readOnly &&
+                !active.disabled;
+
+            if(editable){
+
+                const start =
+                    active.selectionStart ??
+                    active.value.length;
+
+                const end =
+                    active.selectionEnd ??
+                    active.value.length;
+
+                active.value =
+                    active.value.slice(0,start) +
+                    text +
+                    active.value.slice(end);
+
+                active.dispatchEvent(
+                    new Event(
+                        "input",
+                        {bubbles:true}
+                    )
+                );
+
+                setStatus(
+                    isHindi
+                        ? "आवाज़ से टेक्स्ट जोड़ा गया"
+                        : "Voice text added"
+                );
+
+            }else if(!runVoiceCommand(text)){
+
+                setStatus(
+                    isHindi
+                        ? "कमांड समझ नहीं आया"
+                        : "Command not recognized"
+                );
+            }
+        };
+
+        recognition.onerror = () => {
+
+            mic.classList.remove("listening");
+
+            setStatus(
+                isHindi
+                    ? "माइक्रोफ़ोन अनुमति जाँचें"
+                    : "Check microphone permission"
+            );
+        };
+
+        recognition.onend = () => {
+
+            mic.classList.remove("listening");
+
+            if(
+                status &&
+                (
+                    status.textContent.includes("सुन रहा") ||
+                    status.textContent.includes("Listening")
+                )
+            ){
+
+                setStatus(
+                    isHindi
+                        ? "आवाज़ तैयार"
+                        : "Voice ready"
+                );
+            }
+        };
+    }
+
+    speak.addEventListener("click", () => {
+
+        const activePage =
+            document.querySelector(".page.active") ||
+            document.body;
+
+        const text =
+            activePage.innerText
+                .replace(/\s+/g," ")
+                .trim()
+                .slice(0,3500);
+
+        if(!text){
+
+            setStatus(
+                isHindi
+                    ? "पढ़ने के लिए टेक्स्ट नहीं है"
+                    : "No text to read"
+            );
+
+            return;
+        }
+
+        speakText(text);
+
+        setStatus(
+            isHindi
+                ? "पेज पढ़ रहा हूँ…"
+                : "Reading page…"
+        );
+    });
+
+    window.agriGuardSpeak = speakText;
+
+})();
+</script>
+
 </html>
