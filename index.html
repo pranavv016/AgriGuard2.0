@@ -395,7 +395,7 @@ footer{
         <a href="about.html" data-page="about">About</a>
         <a href="diseases.html" data-page="diseases">Diseases</a>
         <a href="disease-predictor.html" data-page="predictor">Disease Check</a>
-        <a href="soil-predictor.html" data-page="soil">Soil Check</a>
+        
         <a href="yield-calculator.html" data-page="yield">Yield Calculator</a>
         <a href="profit-calculator.html" data-page="profit">Profit Calculator</a>
         <a href="market.html" data-page="market">Market Prices</a>
@@ -418,7 +418,7 @@ footer{
             </p>
             <div class="hero-actions">
                 <a href="disease-predictor.html" class="action-btn">Check disease</a>
-                <a href="soil-predictor.html" class="action-btn secondary">Check soil</a>
+                
             </div>
         </div>
         <div class="hero-stats">
@@ -451,12 +451,7 @@ footer{
             <p>Add a photo or select symptoms to get an educational, indicative match.</p>
             <span class="go">Check →</span>
         </a>
-        <a class="quicklink-card" href="soil-predictor.html">
-            <div class="ql-icon">🧪</div>
-            <h3>Soil Predictor</h3>
-            <p>Enter a photo and basic readings to get a summary of soil health.</p>
-            <span class="go">Check →</span>
-        </a>
+        
         <a class="quicklink-card" href="yield-calculator.html">
             <div class="ql-icon">📦</div>
             <h3>Yield Calculator</h3>
@@ -517,7 +512,7 @@ footer{
             <ul>
                 <li><strong>Learn about crop and flower diseases</strong> — see information on common diseases affecting grains, pulses, oilseeds, vegetables, fruits, and flower crops on the <a href="diseases.html">Diseases page</a>.</li>
                 <li><strong>Check a possible disease from a photo or symptoms</strong> — on the <a href="disease-predictor.html">Disease Predictor</a>, add a photo of your crop or select the symptoms you're seeing to get an educational, indicative match.</li>
-                <li><strong>Check soil condition</strong> — on the <a href="soil-predictor.html">Soil Predictor</a>, enter a photo or basic readings and get a simple-language summary of soil health along with suitable crop suggestions.</li>
+                <li><strong>Check soil condition</strong> — on the , enter a photo or basic readings and get a simple-language summary of soil health along with suitable crop suggestions.</li>
                 <li><strong>Calculate expected yield</strong> — use the <a href="yield-calculator.html">Yield Calculator</a> to estimate how much yield (in quintals) your land is likely to produce.</li>
                 <li><strong>Calculate farming profit</strong> — in the <a href="profit-calculator.html">Profit Calculator</a>, enter what you spent and what you expect to earn, and see the estimated profit or loss.</li>
                 <li><strong>View market prices</strong> — on the <a href="market.html">Market Prices</a> page, see indicative, regularly-updated prices for major crops and flowers.</li>
@@ -1014,99 +1009,6 @@ footer{
                 This is educational information only, not a diagnosis. Please confirm with a qualified
                 agriculture officer before making a treatment decision.
             </p>
-        </div>
-    </div>
-</section>
-
-
-</div>
-
-<div class="page" id="page-soil">
-<div class="page-hero">
-    <span class="tag">Soil Predictor</span>
-    <h1>Soil Condition Predictor 🧪</h1>
-    <p>Add a photo of your field or soil sample and enter basic readings, to get a simple-language summary of soil health.</p>
-</div>
-
-<section>
-
-    <!-- ===== PHOTO UPLOAD / CAMERA ===== -->
-    <div class="photo-box">
-        <h3>📷 Add a Photo of the Field or Soil (optional)</h3>
-        <p class="photo-note">The photo is for record and reference purposes. For an accurate check, also fill in the readings below.</p>
-
-        <div class="photo-actions">
-            <button type="button" class="action-btn secondary" id="soil-upload-btn">🖼️ Upload Photo</button>
-            <input type="file" id="soil-file-input" accept="image/*">
-            <button type="button" class="action-btn outline" id="soil-camera-btn">📸 Open Camera</button>
-        </div>
-
-        <div class="camera-wrap" id="soil-camera-wrap" style="display:none;">
-            <video id="soil-video" autoplay playsinline muted></video>
-            <div class="camera-controls">
-                <button type="button" class="action-btn" id="soil-snap-btn">Take Photo</button>
-                <button type="button" class="action-btn secondary" id="soil-cancel-camera-btn">Cancel</button>
-            </div>
-            <canvas id="soil-canvas" style="display:none;"></canvas>
-        </div>
-
-        <div class="photo-stage" id="soil-stage">
-            <div class="photo-preview-wrap">
-                <img class="photo-preview" id="soil-preview" alt="Added photo">
-                <button type="button" class="photo-remove" id="soil-remove-btn" aria-label="Remove photo">✕</button>
-            </div>
-            <p class="photo-meta" id="soil-photo-meta"></p>
-        </div>
-    </div>
-
-    <!-- ===== READING FORM ===== -->
-    <div class="tool-box">
-        <div class="field-grid">
-            <div class="field">
-                <label for="soil-ph">Soil pH</label>
-                <input type="number" id="soil-ph" min="0" max="14" step="0.1" placeholder="e.g. 6.5" value="6.5">
-                <span class="field-hint">Typical range 0 (acidic) – 14 (alkaline)</span>
-            </div>
-            <div class="field">
-                <label for="soil-moisture">Moisture (%)</label>
-                <input type="number" id="soil-moisture" min="0" max="100" step="1" placeholder="e.g. 35" value="35">
-            </div>
-            <div class="field">
-                <label for="soil-n">Nitrogen (N) Level</label>
-                <select id="soil-n"><option value="Low">Low</option><option value="Medium" selected>Medium</option><option value="High">High</option></select>
-            </div>
-            <div class="field">
-                <label for="soil-p">Phosphorus (P) Level</label>
-                <select id="soil-p"><option value="Low">Low</option><option value="Medium" selected>Medium</option><option value="High">High</option></select>
-            </div>
-            <div class="field">
-                <label for="soil-k">Potassium (K) Level</label>
-                <select id="soil-k"><option value="Low">Low</option><option value="Medium" selected>Medium</option><option value="High">High</option></select>
-            </div>
-            <div class="field">
-                <label for="soil-type">Soil Type</label>
-                <select id="soil-type">
-                    <option value="Loamy">Loamy</option>
-                    <option value="Sandy">Sandy</option>
-                    <option value="Clay">Clay</option>
-                    <option value="Silty">Silty</option>
-                    <option value="Black (Regur)">Black (Regur)</option>
-                    <option value="Red">Red</option>
-                    <option value="Laterite">Laterite</option>
-                    <option value="Alluvial">Alluvial</option>
-                </select>
-            </div>
-        </div>
-
-        <button class="action-btn" onclick="predictSoil()">Check Soil Condition</button>
-
-        <div class="result-box" id="soil-result">
-            <h4 id="soil-title"></h4>
-            <p id="soil-ph-line"></p>
-            <p id="soil-moisture-line"></p>
-            <p id="soil-npk-line"></p>
-            <p id="soil-suited-line"></p>
-            <p id="soil-tip" style="margin-top:8px;"></p>
         </div>
     </div>
 </section>
@@ -1931,50 +1833,6 @@ const soilTypeNames = {
 };
 const levelNames = { "Low":"Low", "Medium":"Medium", "High":"High" };
 
-function predictSoil() {
-    const ph = parseFloat(document.getElementById("soil-ph").value);
-    const moisture = parseFloat(document.getElementById("soil-moisture").value);
-    const n = document.getElementById("soil-n").value;
-    const p = document.getElementById("soil-p").value;
-    const k = document.getElementById("soil-k").value;
-    const type = document.getElementById("soil-type").value;
-
-    const box = document.getElementById("soil-result");
-    box.classList.remove("show","warn","bad");
-
-    let phRating, phTip;
-    if (ph < 5.5) { phRating = "Acidic"; phTip = "Consider applying agricultural lime to gradually raise the pH."; }
-    else if (ph < 6.5) { phRating = "Slightly acidic"; phTip = "Suitable for most crops with minor adjustment."; }
-    else if (ph <= 7.5) { phRating = "Neutral (suitable for most crops)"; phTip = "This pH range is suitable for the widest range of crops."; }
-    else if (ph <= 8.5) { phRating = "Slightly alkaline"; phTip = "Adding organic manure or compost can balance the pH over time."; }
-    else { phRating = "Alkaline"; phTip = "Consider gypsum and organic manure to correct high alkalinity."; }
-
-    let moistRating, moistTip;
-    if (moisture < 20) { moistRating = "Low / dry"; moistTip = "Irrigation may be needed soon."; }
-    else if (moisture <= 60) { moistRating = "Adequate"; moistTip = "Moisture level looks suitable for most crops."; }
-    else { moistRating = "High / waterlogging risk"; moistTip = "Improve drainage to protect roots from waterlogging damage."; }
-
-    const levels = [n,p,k];
-    const lowCount = levels.filter(l => l === "Low").length;
-    const highCount = levels.filter(l => l === "High").length;
-    let npkRating, npkTip;
-    if (lowCount >= 2) { npkRating = "Nutrient deficient"; npkTip = "Consider balanced fertilizer or organic manure to raise N-P-K levels."; }
-    else if (highCount >= 2) { npkRating = "Nutrient rich"; npkTip = "Avoid adding more fertilizer; excess nutrients can affect the crop and runoff."; }
-    else { npkRating = "Balanced"; npkTip = "Nutrient levels look reasonably balanced for general farming."; }
-
-    let severity = "show";
-    if (lowCount >= 2 || phRating === "Acidic" || phRating === "Alkaline" || moistRating !== "Adequate") severity = "show warn";
-    if (lowCount === 3 && (phRating === "Acidic" || phRating === "Alkaline")) severity = "show bad";
-
-    document.getElementById("soil-title").textContent = "Soil Summary — " + soilTypeNames[type] + " Soil";
-    document.getElementById("soil-ph-line").textContent = "pH " + ph + ": " + phRating + ". " + phTip;
-    document.getElementById("soil-moisture-line").textContent = "Moisture " + moisture + "%: " + moistRating + ". " + moistTip;
-    document.getElementById("soil-npk-line").textContent = "Nutrients (N/P/K: " + levelNames[n] + "/" + levelNames[p] + "/" + levelNames[k] + "): " + npkRating + ". " + npkTip;
-    document.getElementById("soil-suited-line").textContent = soilTypeNames[type] + " soil is typically suited for: " + soilSuited[type] + ".";
-    document.getElementById("soil-tip").textContent = "This is a general, indicative assessment — contact a soil testing lab for precise fertilizer recommendations.";
-    box.className = "result-box " + severity;
-}
-
 /* ================= YIELD CALCULATOR ================= */
 const yieldDefaults = {
     "Wheat": 18, "Rice": 22, "Maize": 20, "Soybean": 10, "Cotton": 6,
@@ -2128,9 +1986,7 @@ function filterMarket(cat, el) {
 }
 
 /* =====================================================
-   PHOTO UPLOAD + CAMERA (reusable across disease/soil pages)
-   Call setupPhotoTool('pd') or setupPhotoTool('soil') on page load.
-   Expects elements with ids: {prefix}-file-input, {prefix}-camera-btn,
+   PHOTO UPLOAD + CAMERA (reusable across disease/soil pages)Expects elements with ids: {prefix}-file-input, {prefix}-camera-btn,
    {prefix}-upload-btn, {prefix}-video, {prefix}-canvas, {prefix}-snap-btn,
    {prefix}-stage, {prefix}-preview, {prefix}-remove-btn, {prefix}-camera-wrap,
    {prefix}-photo-meta
@@ -2229,7 +2085,6 @@ document.addEventListener("DOMContentLoaded", () => {
     populateCropSelects();
     refreshMarket();
     setupPhotoTool("pd");
-    setupPhotoTool("soil");
 
     const now = new Date();
     const dateEl = document.getElementById("marketDate");
@@ -2247,7 +2102,6 @@ const pageMap = {
     "about.html": "about",
     "diseases.html": "diseases",
     "disease-predictor.html": "predictor",
-    "soil-predictor.html": "soil",
     "yield-calculator.html": "yield",
     "profit-calculator.html": "profit",
     "market.html": "market"

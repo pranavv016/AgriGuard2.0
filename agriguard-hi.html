@@ -396,7 +396,7 @@ footer{
         <a href="about-hi.html" data-page="about">परिचय</a>
         <a href="diseases-hi.html" data-page="diseases">रोग</a>
         <a href="disease-predictor-hi.html" data-page="predictor">रोग जाँच</a>
-        <a href="soil-predictor-hi.html" data-page="soil">मिट्टी जाँच</a>
+        
         <a href="yield-calculator-hi.html" data-page="yield">उपज कैलकुलेटर</a>
         <a href="profit-calculator-hi.html" data-page="profit">लाभ कैलकुलेटर</a>
         <a href="market-hi.html" data-page="market">बाज़ार भाव</a>
@@ -419,7 +419,7 @@ footer{
             </p>
             <div class="hero-actions">
                 <a href="disease-predictor-hi.html" class="action-btn">रोग जाँचें</a>
-                <a href="soil-predictor-hi.html" class="action-btn secondary">मिट्टी जाँचें</a>
+                
             </div>
         </div>
         <div class="hero-stats">
@@ -452,12 +452,7 @@ footer{
             <p>तस्वीर जोड़ें या लक्षण चुनकर एक शैक्षिक, संकेतात्मक मिलान पाएँ।</p>
             <span class="go">जाँचें →</span>
         </a>
-        <a class="quicklink-card" href="soil-predictor-hi.html">
-            <div class="ql-icon">🧪</div>
-            <h3>मिट्टी जाँचकर्ता</h3>
-            <p>तस्वीर व बुनियादी रीडिंग डालें, मिट्टी के स्वास्थ्य का सारांश पाएँ।</p>
-            <span class="go">जाँचें →</span>
-        </a>
+        
         <a class="quicklink-card" href="yield-calculator-hi.html">
             <div class="ql-icon">📦</div>
             <h3>उपज कैलकुलेटर</h3>
@@ -516,7 +511,7 @@ footer{
             <ul>
                 <li><strong>फ़सल व फूलों के रोगों के बारे में जानें</strong> — अनाज, दलहन, तिलहन, सब्ज़ियों, फलों और फूलों की फ़सलों के आम रोगों की जानकारी <a href="diseases-hi.html">रोग पन्ने</a> पर देखें।</li>
                 <li><strong>तस्वीर या लक्षणों से संभावित रोग की जाँच करें</strong> — <a href="disease-predictor-hi.html">रोग जाँचकर्ता</a> पर अपनी फ़सल की तस्वीर जोड़ें या दिख रहे लक्षण चुनकर एक शैक्षिक, संकेतात्मक मिलान पाएँ।</li>
-                <li><strong>मिट्टी की स्थिति जाँचें</strong> — <a href="soil-predictor-hi.html">मिट्टी जाँचकर्ता</a> पर तस्वीर या बुनियादी रीडिंग डालें और सरल भाषा में मिट्टी के स्वास्थ्य का सारांश व उपयुक्त फ़सलों के सुझाव पाएँ।</li>
+                <li><strong>मिट्टी की स्थिति जाँचें</strong> —  पर तस्वीर या बुनियादी रीडिंग डालें और सरल भाषा में मिट्टी के स्वास्थ्य का सारांश व उपयुक्त फ़सलों के सुझाव पाएँ।</li>
                 <li><strong>अपेक्षित उपज निकालें</strong> — <a href="yield-calculator-hi.html">उपज कैलकुलेटर</a> से अनुमान लगाएँ कि आपकी ज़मीन से कितनी उपज (क्विंटल में) मिलने की संभावना है।</li>
                 <li><strong>खेती का लाभ निकालें</strong> — <a href="profit-calculator-hi.html">लाभ कैलकुलेटर</a> में जो खर्च किया और जो कमाई की उम्मीद है, वह डालें और अनुमानित लाभ या हानि देखें।</li>
                 <li><strong>बाज़ार भाव देखें</strong> — <a href="market-hi.html">बाज़ार भाव</a> पन्ने पर प्रमुख फ़सलों और फूलों के संकेतात्मक, नियमित रूप से अपडेट होने वाले भाव देखें।</li>
@@ -1017,99 +1012,6 @@ footer{
 
 </div>
 
-<div class="page" id="page-soil">
-<div class="page-hero">
-    <span class="tag">मिट्टी जाँचकर्ता</span>
-    <h1>मिट्टी की स्थिति जाँचकर्ता 🧪</h1>
-    <p>खेत या मिट्टी के नमूने की तस्वीर जोड़ें और बुनियादी रीडिंग डालें, ताकि मिट्टी के स्वास्थ्य का सरल भाषा में सारांश मिल सके।</p>
-</div>
-
-<section>
-
-    <!-- ===== PHOTO UPLOAD / CAMERA ===== -->
-    <div class="photo-box">
-        <h3>📷 खेत या मिट्टी की तस्वीर जोड़ें (वैकल्पिक)</h3>
-        <p class="photo-note">तस्वीर रिकॉर्ड व संदर्भ के लिए है। सटीक जाँच के लिए नीचे दी गई रीडिंग भी भरें।</p>
-
-        <div class="photo-actions">
-            <button type="button" class="action-btn secondary" id="soil-upload-btn">🖼️ तस्वीर अपलोड करें</button>
-            <input type="file" id="soil-file-input" accept="image/*">
-            <button type="button" class="action-btn outline" id="soil-camera-btn">📸 कैमरा खोलें</button>
-        </div>
-
-        <div class="camera-wrap" id="soil-camera-wrap" style="display:none;">
-            <video id="soil-video" autoplay playsinline muted></video>
-            <div class="camera-controls">
-                <button type="button" class="action-btn" id="soil-snap-btn">फ़ोटो लें</button>
-                <button type="button" class="action-btn secondary" id="soil-cancel-camera-btn">रद्द करें</button>
-            </div>
-            <canvas id="soil-canvas" style="display:none;"></canvas>
-        </div>
-
-        <div class="photo-stage" id="soil-stage">
-            <div class="photo-preview-wrap">
-                <img class="photo-preview" id="soil-preview" alt="जोड़ी गई तस्वीर">
-                <button type="button" class="photo-remove" id="soil-remove-btn" aria-label="तस्वीर हटाएँ">✕</button>
-            </div>
-            <p class="photo-meta" id="soil-photo-meta"></p>
-        </div>
-    </div>
-
-    <!-- ===== READING FORM ===== -->
-    <div class="tool-box">
-        <div class="field-grid">
-            <div class="field">
-                <label for="soil-ph">मिट्टी का pH</label>
-                <input type="number" id="soil-ph" min="0" max="14" step="0.1" placeholder="जैसे 6.5" value="6.5">
-                <span class="field-hint">सामान्य सीमा 0 (अम्लीय) – 14 (क्षारीय)</span>
-            </div>
-            <div class="field">
-                <label for="soil-moisture">नमी (%)</label>
-                <input type="number" id="soil-moisture" min="0" max="100" step="1" placeholder="जैसे 35" value="35">
-            </div>
-            <div class="field">
-                <label for="soil-n">नाइट्रोजन (N) स्तर</label>
-                <select id="soil-n"><option value="Low">कम</option><option value="Medium" selected>मध्यम</option><option value="High">अधिक</option></select>
-            </div>
-            <div class="field">
-                <label for="soil-p">फ़ॉस्फ़ोरस (P) स्तर</label>
-                <select id="soil-p"><option value="Low">कम</option><option value="Medium" selected>मध्यम</option><option value="High">अधिक</option></select>
-            </div>
-            <div class="field">
-                <label for="soil-k">पोटैशियम (K) स्तर</label>
-                <select id="soil-k"><option value="Low">कम</option><option value="Medium" selected>मध्यम</option><option value="High">अधिक</option></select>
-            </div>
-            <div class="field">
-                <label for="soil-type">मिट्टी का प्रकार</label>
-                <select id="soil-type">
-                    <option value="Loamy">दोमट</option>
-                    <option value="Sandy">रेतीली</option>
-                    <option value="Clay">चिकनी</option>
-                    <option value="Silty">गादयुक्त</option>
-                    <option value="Black (Regur)">काली (रेगुर)</option>
-                    <option value="Red">लाल</option>
-                    <option value="Laterite">लैटेराइट</option>
-                    <option value="Alluvial">जलोढ़</option>
-                </select>
-            </div>
-        </div>
-
-        <button class="action-btn" onclick="predictSoil()">मिट्टी की स्थिति जाँचें</button>
-
-        <div class="result-box" id="soil-result">
-            <h4 id="soil-title"></h4>
-            <p id="soil-ph-line"></p>
-            <p id="soil-moisture-line"></p>
-            <p id="soil-npk-line"></p>
-            <p id="soil-suited-line"></p>
-            <p id="soil-tip" style="margin-top:8px;"></p>
-        </div>
-    </div>
-</section>
-
-
-</div>
-
 <div class="page" id="page-yield">
 <div class="page-hero">
     <span class="tag">उपज कैलकुलेटर</span>
@@ -1591,50 +1493,6 @@ const soilTypeHindi = {
 };
 const levelHindi = { "Low":"कम", "Medium":"मध्यम", "High":"अधिक" };
 
-function predictSoil() {
-    const ph = parseFloat(document.getElementById("soil-ph").value);
-    const moisture = parseFloat(document.getElementById("soil-moisture").value);
-    const n = document.getElementById("soil-n").value;
-    const p = document.getElementById("soil-p").value;
-    const k = document.getElementById("soil-k").value;
-    const type = document.getElementById("soil-type").value;
-
-    const box = document.getElementById("soil-result");
-    box.classList.remove("show","warn","bad");
-
-    let phRating, phTip;
-    if (ph < 5.5) { phRating = "अम्लीय"; phTip = "pH धीरे-धीरे बढ़ाने के लिए कृषि चूना डालने पर विचार करें।"; }
-    else if (ph < 6.5) { phRating = "हल्की अम्लीय"; phTip = "मामूली सुधार के साथ अधिकांश फ़सलों के लिए उपयुक्त।"; }
-    else if (ph <= 7.5) { phRating = "उदासीन (अधिकांश फ़सलों के लिए उपयुक्त)"; phTip = "यह pH सीमा सबसे अधिक फ़सलों के लिए उपयुक्त है।"; }
-    else if (ph <= 8.5) { phRating = "हल्की क्षारीय"; phTip = "जैविक खाद या कम्पोस्ट डालने से समय के साथ pH संतुलित हो सकता है।"; }
-    else { phRating = "क्षारीय"; phTip = "अधिक क्षारीयता ठीक करने के लिए जिप्सम और जैविक खाद पर विचार करें।"; }
-
-    let moistRating, moistTip;
-    if (moisture < 20) { moistRating = "कम / सूखी"; moistTip = "जल्द सिंचाई की ज़रूरत हो सकती है।"; }
-    else if (moisture <= 60) { moistRating = "पर्याप्त"; moistTip = "नमी का स्तर अधिकांश फ़सलों के लिए उपयुक्त लगता है।"; }
-    else { moistRating = "अधिक / जलभराव का ख़तरा"; moistTip = "जलभराव से जड़ों को नुकसान से बचाने के लिए जल निकासी सुधारें।"; }
-
-    const levels = [n,p,k];
-    const lowCount = levels.filter(l => l === "Low").length;
-    const highCount = levels.filter(l => l === "High").length;
-    let npkRating, npkTip;
-    if (lowCount >= 2) { npkRating = "पोषक तत्वों की कमी"; npkTip = "N-P-K स्तर बढ़ाने के लिए संतुलित उर्वरक या जैविक खाद पर विचार करें।"; }
-    else if (highCount >= 2) { npkRating = "पोषक तत्वों से भरपूर"; npkTip = "अधिक उर्वरक डालने से बचें; अत्यधिक पोषक तत्व फ़सल और बहाव को प्रभावित कर सकते हैं।"; }
-    else { npkRating = "संतुलित"; npkTip = "पोषक तत्वों का स्तर सामान्य खेती के लिए काफ़ी संतुलित लगता है।"; }
-
-    let severity = "show";
-    if (lowCount >= 2 || phRating === "अम्लीय" || phRating === "क्षारीय" || moistRating !== "पर्याप्त") severity = "show warn";
-    if (lowCount === 3 && (phRating === "अम्लीय" || phRating === "क्षारीय")) severity = "show bad";
-
-    document.getElementById("soil-title").textContent = "मिट्टी सारांश — " + soilTypeHindi[type] + " मिट्टी";
-    document.getElementById("soil-ph-line").textContent = "pH " + ph + ": " + phRating + "। " + phTip;
-    document.getElementById("soil-moisture-line").textContent = "नमी " + moisture + "%: " + moistRating + "। " + moistTip;
-    document.getElementById("soil-npk-line").textContent = "पोषक तत्व (N/P/K: " + levelHindi[n] + "/" + levelHindi[p] + "/" + levelHindi[k] + "): " + npkRating + "। " + npkTip;
-    document.getElementById("soil-suited-line").textContent = soilTypeHindi[type] + " मिट्टी आमतौर पर इनके लिए उपयुक्त है: " + soilSuited[type] + "।";
-    document.getElementById("soil-tip").textContent = "यह एक सामान्य, संकेतात्मक आकलन है — सटीक उर्वरक सिफ़ारिशों के लिए मिट्टी परीक्षण प्रयोगशाला से संपर्क करें।";
-    box.className = "result-box " + severity;
-}
-
 /* ================= YIELD CALCULATOR ================= */
 const yieldDefaults = {
     "गेहूँ": 18, "धान": 22, "मक्का": 20, "सोयाबीन": 10, "कपास": 6,
@@ -1788,9 +1646,7 @@ function filterMarket(cat, el) {
 }
 
 /* =====================================================
-   PHOTO UPLOAD + CAMERA (reusable across disease/soil pages)
-   Call setupPhotoTool('pd') or setupPhotoTool('soil') on page load.
-   Expects elements with ids: {prefix}-file-input, {prefix}-camera-btn,
+   PHOTO UPLOAD + CAMERA (reusable across disease/soil pages)Expects elements with ids: {prefix}-file-input, {prefix}-camera-btn,
    {prefix}-upload-btn, {prefix}-video, {prefix}-canvas, {prefix}-snap-btn,
    {prefix}-stage, {prefix}-preview, {prefix}-remove-btn, {prefix}-camera-wrap,
    {prefix}-photo-meta
@@ -1889,7 +1745,6 @@ document.addEventListener("DOMContentLoaded", () => {
     populateCropSelects();
     refreshMarket();
     setupPhotoTool("pd");
-    setupPhotoTool("soil");
 
     const now = new Date();
     const dateEl = document.getElementById("marketDate");
@@ -1907,7 +1762,6 @@ const pageMap = {
     "about-hi.html": "about",
     "diseases-hi.html": "diseases",
     "disease-predictor-hi.html": "predictor",
-    "soil-predictor-hi.html": "soil",
     "yield-calculator-hi.html": "yield",
     "profit-calculator-hi.html": "profit",
     "market-hi.html": "market"
