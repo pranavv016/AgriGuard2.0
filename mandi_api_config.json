@@ -1,0 +1,28 @@
+{
+  "resource_id": "9ef84268-d588-465a-a308-a864a43d0070",
+  "base_url": "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070",
+  "source": "Government of India — AGMARKNET / data.gov.in",
+  "update_frequency": "daily",
+  "price_field": "modal_price",
+  "price_unit": "₹/quintal",
+  "filters": {
+    "primary_states": [
+      "Uttar Pradesh",
+      "Bihar"
+    ],
+    "supported_states": [
+      "Uttar Pradesh",
+      "Bihar",
+      "Delhi",
+      "Haryana",
+      "Punjab",
+      "Rajasthan",
+      "Uttarakhand",
+      "Himachal Pradesh",
+      "Jammu and Kashmir",
+      "Madhya Pradesh",
+      "Jharkhand",
+      "Chhattisgarh"
+    ]
+  }
+}

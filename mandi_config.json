@@ -1,0 +1,51 @@
+{
+  "region": "North India",
+  "primary_states": [
+    "Uttar Pradesh",
+    "Bihar"
+  ],
+  "supported_states": [
+    "Uttar Pradesh",
+    "Bihar",
+    "Delhi",
+    "Haryana",
+    "Punjab",
+    "Rajasthan",
+    "Uttarakhand",
+    "Himachal Pradesh",
+    "Jammu and Kashmir",
+    "Madhya Pradesh",
+    "Jharkhand",
+    "Chhattisgarh"
+  ],
+  "priority_commodities": [
+    "Wheat",
+    "Rice",
+    "Paddy",
+    "Maize",
+    "Potato",
+    "Onion",
+    "Tomato",
+    "Mustard",
+    "Gram",
+    "Chickpea",
+    "Lentil",
+    "Pea",
+    "Soybean",
+    "Sugarcane",
+    "Cotton",
+    "Cauliflower",
+    "Cabbage",
+    "Brinjal",
+    "Okra",
+    "Green Chilli",
+    "Garlic",
+    "Ginger",
+    "Guava",
+    "Mango",
+    "Banana"
+  ],
+  "price_unit": "₹/quintal",
+  "source": "AGMARKNET / data.gov.in",
+  "granularity": "daily"
+}

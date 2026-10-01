@@ -1,0 +1,47 @@
+name: Update North India Mandi Data
+
+on:
+  schedule:
+    - cron: "30 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-mandi-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Fetch mandi data
+        env:
+          DATA_GOV_API_KEY: ${{ secrets.DATA_GOV_API_KEY }}
+        run: |
+          python scripts/update_mandi_data.py
+
+      - name: Commit updated mandi data
+        run: |
+          git config user.name "AgriGuard Mandi Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add mandi_data.json
+
+          if git diff --cached --quiet; then
+            echo "No mandi data changes."
+          else
+            git commit -m "Update North India mandi data"
+            git push
+          fi
