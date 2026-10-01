@@ -1255,7 +1255,343 @@ footer{
 
 <footer>© 2026 AgriGuard. Smart information for better farming.</footer>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
 <script>
+
+/* =====================================================
+   AGRIGUARD AI — TENSORFLOW.JS MODEL
+   Browser-side leaf disease classification
+   ===================================================== */
+
+let agriGuardAIModel = null;
+let agriGuardAILabels = null;
+let agriGuardAIStatus = "loading";
+
+async function loadAgriGuardAIModel() {
+    try {
+        agriGuardAIStatus = "loading";
+
+        console.log("AgriGuard AI: loading TensorFlow.js model...");
+
+        agriGuardAIModel = await tf.loadGraphModel(
+            "./models/agriguard/model.json"
+        );
+
+        const labelsResponse = await fetch(
+            "./models/agriguard/labels.json",
+            { cache: "no-cache" }
+        );
+
+        if (!labelsResponse.ok) {
+            throw new Error("Labels HTTP " + labelsResponse.status);
+        }
+
+        agriGuardAILabels = await labelsResponse.json();
+
+        if (!Array.isArray(agriGuardAILabels) ||
+            agriGuardAILabels.length !== 38) {
+            throw new Error("Expected 38 disease labels.");
+        }
+
+        agriGuardAIStatus = "ready";
+
+        console.log(
+            "AgriGuard AI: model loaded successfully.",
+            "Classes:",
+            agriGuardAILabels.length
+        );
+
+        /*
+         * If the user selected/took a photo while the model was loading,
+         * run the pending image automatically now.
+         */
+        const pendingPreview = document.getElementById("pd-preview");
+
+        if (
+            pendingPreview &&
+            pendingPreview.src &&
+            pendingPreview.src !== window.location.href
+        ) {
+            console.log(
+                "AgriGuard AI: pending photo detected; running inference..."
+            );
+
+            setTimeout(() => {
+                runAgriGuardPhotoAI();
+            }, 0);
+        }
+
+        return true;
+
+    } catch (error) {
+        agriGuardAIStatus = "error";
+
+        console.error(
+            "AgriGuard AI: model loading failed:",
+            error
+        );
+
+        return false;
+    }
+}
+
+loadAgriGuardAIModel();
+
+
+
+/* =====================================================
+   AGRIGUARD AI — IMAGE PREDICTION
+   Model input: 160 x 160 RGB
+   Preprocessing is already inside the TF.js model.
+   ===================================================== */
+
+async function predictAgriGuardImage(imageElement) {
+    if (!agriGuardAIModel || !agriGuardAILabels) {
+        throw new Error("AgriGuard AI model is not ready yet.");
+    }
+
+    if (!imageElement || !imageElement.complete) {
+        throw new Error("The selected image is not ready.");
+    }
+
+    let inputTensor = null;
+    let outputTensor = null;
+
+    try {
+        inputTensor = tf.tidy(() => {
+            return tf.browser.fromPixels(imageElement)
+                .resizeBilinear([160, 160])
+                .toFloat()
+                .expandDims(0);
+        });
+
+        /*
+         * IMPORTANT:
+         * Do NOT apply /255 or MobileNetV2 preprocess_input here.
+         * The exported model already contains MobileNetV2
+         * preprocess_input internally.
+         */
+
+        outputTensor = await agriGuardAIModel.executeAsync(
+            { image: inputTensor }
+        );
+
+        const output = Array.isArray(outputTensor)
+            ? outputTensor[0]
+            : outputTensor;
+
+        const probabilities = await output.data();
+
+        let bestIndex = 0;
+
+        for (let i = 1; i < probabilities.length; i++) {
+            if (probabilities[i] > probabilities[bestIndex]) {
+                bestIndex = i;
+            }
+        }
+
+        const confidence = Number(probabilities[bestIndex]);
+
+        return {
+            index: bestIndex,
+            label: agriGuardAILabels[bestIndex],
+            confidence: confidence,
+            confidencePercent: (confidence * 100).toFixed(2),
+            probabilities: Array.from(probabilities)
+        };
+
+    } finally {
+        if (inputTensor) {
+            inputTensor.dispose();
+        }
+
+        if (outputTensor) {
+            if (Array.isArray(outputTensor)) {
+                outputTensor.forEach(t => {
+                    if (t && typeof t.dispose === "function") {
+                        t.dispose();
+                    }
+                });
+            } else if (typeof outputTensor.dispose === "function") {
+                outputTensor.dispose();
+            }
+        }
+    }
+}
+
+
+
+/* =====================================================
+   AGRIGUARD AI — CONNECT PHOTO UPLOAD TO MODEL
+   Keeps the existing photo/camera system intact.
+   ===================================================== */
+
+function formatAgriGuardAIClass(label) {
+    return String(label || "")
+        .replace(/___/g, " — ")
+        .replace(/_/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function getAgriGuardAICrop(label) {
+    const text = String(label || "");
+
+    if (!text.includes("___")) {
+        return "";
+    }
+
+    return text.split("___")[0]
+        .replace(/\(including sour\)/gi, "")
+        .replace(/_/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+async function runAgriGuardPhotoAI() {
+    const preview = document.getElementById("pd-preview");
+
+    if (!preview) {
+        console.warn("AgriGuard AI: disease preview element not found.");
+        return null;
+    }
+
+    if (agriGuardAIStatus !== "ready") {
+        console.warn(
+            "AgriGuard AI: model is not ready.",
+            agriGuardAIStatus
+        );
+        return null;
+    }
+
+    try {
+        const result = await predictAgriGuardImage(preview);
+
+        console.log("AgriGuard AI prediction:", result);
+
+        const resultBox = document.getElementById("pd-result");
+        const title = document.getElementById("pd-title");
+        const confidence = document.getElementById("pd-confidence");
+        const desc = document.getElementById("pd-desc");
+        const advice = document.getElementById("pd-advice");
+
+        if (resultBox) {
+            resultBox.classList.add("show");
+        }
+
+        if (title) {
+            title.textContent =
+                "AI Image Result: " +
+                formatAgriGuardAIClass(result.label);
+        }
+
+        if (confidence) {
+            confidence.textContent =
+                "AI confidence: " +
+                result.confidencePercent +
+                "%";
+        }
+
+        const crop = getAgriGuardAICrop(result.label);
+        const diseaseName = result.label.includes("___")
+            ? result.label.split("___")[1]
+            : result.label;
+
+        const knowledge = findAgriGuardKnowledge(
+            crop,
+            formatAgriGuardAIClass(diseaseName)
+        );
+
+        if (knowledge) {
+            if (desc) {
+                desc.textContent = knowledge.symptoms || "";
+            }
+
+            if (advice) {
+                advice.textContent = knowledge.treatment || "";
+            }
+
+            const knowledgeBox =
+                document.getElementById("pd-knowledge");
+
+            if (knowledgeBox) {
+                knowledgeBox.style.display = "block";
+
+                const cause =
+                    document.getElementById("pd-cause");
+                const symptoms =
+                    document.getElementById("pd-kb-symptoms");
+                const treatment =
+                    document.getElementById("pd-treatment");
+                const prevention =
+                    document.getElementById("pd-prevention");
+                const severity =
+                    document.getElementById("pd-severity");
+
+                if (cause) cause.textContent = knowledge.cause || "";
+                if (symptoms) symptoms.textContent = knowledge.symptoms || "";
+                if (treatment) treatment.textContent = knowledge.treatment || "";
+                if (prevention) prevention.textContent = knowledge.prevention || "";
+                if (severity) severity.textContent = knowledge.severity || "";
+            }
+        } else {
+            if (desc) {
+                desc.textContent =
+                    "The AI classified the uploaded image as " +
+                    formatAgriGuardAIClass(result.label) +
+                    ".";
+            }
+
+            if (advice) {
+                advice.textContent =
+                    "Detailed treatment information is not available " +
+                    "in the current AgriGuard knowledge base for this class.";
+            }
+
+            const knowledgeBox =
+                document.getElementById("pd-knowledge");
+
+            if (knowledgeBox) {
+                knowledgeBox.style.display = "none";
+            }
+        }
+
+        return result;
+
+    } catch (error) {
+        console.error(
+            "AgriGuard AI image prediction failed:",
+            error
+        );
+        return null;
+    }
+}
+
+function connectAgriGuardPhotoAI() {
+    const preview = document.getElementById("pd-preview");
+
+    if (!preview) {
+        console.warn("AgriGuard AI: pd-preview not found.");
+        return;
+    }
+
+    if (preview.dataset.agriGuardAIConnected === "true") {
+        return;
+    }
+
+    preview.addEventListener("load", () => {
+        runAgriGuardPhotoAI();
+    });
+
+    preview.dataset.agriGuardAIConnected = "true";
+
+    console.log("AgriGuard AI: disease photo connection ready.");
+}
+
+connectAgriGuardPhotoAI();
+
+
 /* =====================================================
    AgriGuard — shared data & logic (all pages load this file)
    ===================================================== */
