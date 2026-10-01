@@ -1649,6 +1649,26 @@ const diseaseDB = {
         { name: "Anthracnose", symptoms: [4], advice: "Remove and destroy infected fruit and avoid overhead watering close to harvest." },
         { name: "Powdery Mildew", symptoms: [2], advice: "Improve air circulation and avoid excess nitrogen fertilizer." }
     ],
+    Onion: [
+        { name: "Downy Mildew", symptoms: [6], advice: "Improve field ventilation and drainage and avoid prolonged leaf wetness." },
+        { name: "Purple Blotch", symptoms: [1,10], advice: "Remove infected leaves, improve air circulation, and avoid prolonged leaf wetness." }
+    ],
+    Garlic: [
+        { name: "Purple Blotch", symptoms: [1,10], advice: "Remove infected leaves and plant debris and improve air circulation." },
+        { name: "Basal Rot", symptoms: [5,8], advice: "Improve drainage, remove severely affected plants, and use healthy cloves for planting." }
+    ],
+    Radish: [
+        { name: "Alternaria Leaf Spot", symptoms: [1,10], advice: "Remove infected leaves, use healthy seed, and avoid prolonged leaf wetness." },
+        { name: "Clubroot", symptoms: [5,8], advice: "Improve soil drainage, maintain suitable soil conditions, and rotate crops." }
+    ],
+    Carrot: [
+        { name: "Leaf Blight", symptoms: [1,10], advice: "Remove infected foliage, use healthy seed, and avoid prolonged leaf wetness." },
+        { name: "Cavity Spot", symptoms: [8,9], advice: "Improve soil drainage and avoid excessive irrigation." }
+    ],
+    Tulip: [
+        { name: "Botrytis Blight", symptoms: [4,8], advice: "Improve air circulation, remove infected plant material, and avoid excess moisture." },
+        { name: "Bulb Rot", symptoms: [8,9], advice: "Use healthy bulbs, improve soil drainage, and remove rotting bulbs promptly." }
+    ],
     Mango: [
         { name: "Anthracnose", symptoms: [4], advice: "Prune for better air circulation and remove fallen infected leaves and fruit." },
         { name: "Powdery Mildew", symptoms: [2], advice: "Most common during flowering in cool, humid weather; watch the flowers closely." }
@@ -1743,7 +1763,14 @@ const cropNames = {
     Groundnut: "Groundnut", Sunflower: "Sunflower", Barley: "Barley", Lentil: "Lentil",
     Pea: "Pea", Brinjal: "Brinjal", Okra: "Okra", Cauliflower: "Cauliflower",
     Spinach: "Spinach", Turmeric: "Turmeric", Ginger: "Ginger", Papaya: "Papaya",
-    Pomegranate: "Pomegranate", Guava: "Guava", Apple: "Apple", Chrysanthemum: "Chrysanthemum", Lily: "Lily"
+    Pomegranate: "Pomegranate", Guava: "Guava", Apple: "Apple", Chrysanthemum: "Chrysanthemum", Lily: "Lily",
+
+    Onion: "Onion",
+    Garlic: "Garlic",
+    Radish: "Radish",
+    Carrot: "Carrot",
+    Tulip: "Tulip"
+
 };
 
 function populateDiseaseCropSelect(){

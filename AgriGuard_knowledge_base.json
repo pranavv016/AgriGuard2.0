@@ -134,6 +134,325 @@
       "treatment": "Remove and separate rotten or damaged tubers. Dry healthy tubers thoroughly before storage and maintain suitable storage conditions with good ventilation. Avoid storing injured or cut tubers with healthy produce.",
       "prevention": "Handle tubers carefully to prevent wounds, harvest under suitable conditions, allow tubers to dry and cure before storage, maintain clean and well-ventilated storage conditions, and regularly remove damaged or decaying tubers.",
       "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Wheat",
+      "standard_name": "Wheat rust",
+      "cause": "Fungal diseases caused by rust fungi such as Puccinia species.",
+      "symptoms": "Orange, yellow, brown, or dark rust-colored pustules develop on leaves and sometimes stems. Severe infection can reduce green leaf area and grain development.",
+      "treatment": "Remove heavily affected volunteer plants where practical and use locally recommended rust-management fungicides when disease pressure warrants treatment, following the current label and local agricultural advisory.",
+      "prevention": "Use rust-resistant varieties where available, sow at the recommended time, maintain balanced nutrition, and monitor fields regularly.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Wheat",
+      "standard_name": "Wheat powdery mildew",
+      "cause": "Fungal disease caused by Blumeria graminis f. sp. tritici.",
+      "symptoms": "White to gray powdery fungal growth develops on leaves and stems. In severe cases leaves yellow, dry prematurely, and contribute less to grain filling.",
+      "treatment": "Improve crop ventilation and use locally recommended fungicides when disease pressure warrants treatment, following the label.",
+      "prevention": "Avoid excessive nitrogen, maintain appropriate plant density, use resistant varieties where available, and monitor dense crop growth.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Wheat",
+      "standard_name": "Karnal bunt",
+      "cause": "Fungal disease caused by Tilletia indica.",
+      "symptoms": "Some grains become partially replaced by dark masses of fungal spores and may produce a distinctive fishy or unpleasant odour when crushed.",
+      "treatment": "Use clean seed and follow local seed-treatment and disease-management recommendations. Heavily contaminated seed should not be used for planting.",
+      "prevention": "Use certified disease-free seed, follow quarantine and seed-health regulations, and use resistant or tolerant varieties where available.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Rice",
+      "standard_name": "Rice blast",
+      "cause": "Fungal disease caused by Magnaporthe oryzae.",
+      "symptoms": "Spindle-shaped gray, brown, or reddish-brown lesions develop on leaves. Lesions may also occur on nodes and panicles, causing poor grain filling.",
+      "treatment": "Maintain balanced nitrogen nutrition and use locally recommended fungicides when disease pressure warrants treatment, following the label.",
+      "prevention": "Use resistant varieties where available, use healthy seed, avoid excessive nitrogen, and monitor fields during humid conditions.",
+      "severity": "High"
+    },
+    {
+      "crop_name": "Rice",
+      "standard_name": "Bacterial leaf blight",
+      "cause": "Bacterial disease caused by Xanthomonas oryzae pv. oryzae.",
+      "symptoms": "Water-soaked streaks develop along leaf margins and expand into yellow or straw-colored areas. Severely affected leaves may dry from the tip downward.",
+      "treatment": "Remove severely affected plant material where practical and follow local disease-management recommendations. Avoid unnecessary nitrogen application.",
+      "prevention": "Use resistant varieties where available, healthy seed, balanced fertilization, good field sanitation, and avoid excessive nitrogen.",
+      "severity": "High"
+    },
+    {
+      "crop_name": "Rice",
+      "standard_name": "Rice sheath blight",
+      "cause": "Fungal disease caused by Rhizoctonia solani.",
+      "symptoms": "Oval or irregular green-gray to brown lesions develop on leaf sheaths near the water line and can spread upward under humid conditions.",
+      "treatment": "Improve crop spacing and canopy ventilation and use locally recommended fungicides when disease pressure warrants treatment.",
+      "prevention": "Avoid excessive nitrogen, maintain suitable spacing, manage weeds, and monitor dense crop areas.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Maize",
+      "standard_name": "Maize leaf blight",
+      "cause": "Fungal disease commonly associated with Exserohilum turcicum.",
+      "symptoms": "Long gray-green to tan or brown lesions develop on leaves and may enlarge and merge, reducing the photosynthetic leaf area.",
+      "treatment": "Remove heavily infected residue where practical and use locally recommended fungicides when disease pressure warrants treatment.",
+      "prevention": "Use resistant hybrids where available, rotate crops, maintain field sanitation, and avoid excessive crop density.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Maize",
+      "standard_name": "Maize downy mildew",
+      "cause": "Disease caused by several downy mildew pathogens, including Peronosclerospora species.",
+      "symptoms": "Pale yellow or whitish streaks develop on leaves, sometimes with downy growth under humid conditions. Plants may become stunted.",
+      "treatment": "Remove severely affected plants where practical and follow locally recommended disease-management measures.",
+      "prevention": "Use resistant seed or hybrids where available, avoid poorly drained fields, and use healthy planting material.",
+      "severity": "High"
+    },
+    {
+      "crop_name": "Sugarcane",
+      "standard_name": "Sugarcane smut",
+      "cause": "Fungal disease caused by Sporisorium scitamineum.",
+      "symptoms": "A long black whip-like structure develops from the growing point of infected plants. Infected plants may become thin and produce excessive side shoots.",
+      "treatment": "Remove and safely destroy infected stools where practical and follow local recommendations for disease management.",
+      "prevention": "Use healthy disease-free planting material, resistant varieties where available, and inspect seed cane before planting.",
+      "severity": "High"
+    },
+    {
+      "crop_name": "Brinjal",
+      "standard_name": "Brinjal fruit and stem blight",
+      "cause": "Fungal disease caused by Phomopsis vexans.",
+      "symptoms": "Dark lesions develop on stems and fruits. Infected fruits may develop sunken spots, internal decay, and black fungal structures.",
+      "treatment": "Remove and destroy infected fruits and plant parts and maintain field sanitation. Use locally recommended fungicides when necessary.",
+      "prevention": "Use healthy seed, crop rotation, good field sanitation, and avoid prolonged leaf and fruit wetness.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Brinjal",
+      "standard_name": "Brinjal bacterial wilt",
+      "cause": "Bacterial disease commonly caused by Ralstonia solanacearum.",
+      "symptoms": "Plants wilt rapidly, often while leaves remain green. Cutting the stem may reveal brown vascular tissue and bacterial ooze under suitable conditions.",
+      "treatment": "Remove severely affected plants and avoid moving contaminated soil or irrigation water to healthy areas. Follow local management recommendations.",
+      "prevention": "Use healthy seedlings, resistant or tolerant varieties where available, crop rotation, good drainage, and clean planting material.",
+      "severity": "High"
+    },
+    {
+      "crop_name": "Chilli",
+      "standard_name": "Chilli anthracnose",
+      "cause": "Fungal disease caused by Colletotrichum species.",
+      "symptoms": "Sunken dark lesions develop on fruits, sometimes with concentric rings and orange or salmon-colored spore masses. Leaves and stems may also be affected.",
+      "treatment": "Remove and destroy infected fruits and plant material and use locally recommended fungicides when disease pressure warrants treatment.",
+      "prevention": "Use healthy seed, avoid overhead irrigation, improve field ventilation, and remove infected fruits promptly.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Chilli",
+      "standard_name": "Chilli powdery mildew",
+      "cause": "Fungal disease caused by Leveillula taurica.",
+      "symptoms": "Yellow patches develop on upper leaf surfaces with white fungal growth commonly visible on the underside. Severe infection causes premature leaf drop.",
+      "treatment": "Improve air circulation and use locally recommended fungicides when required.",
+      "prevention": "Avoid excessive nitrogen, maintain suitable spacing, and monitor crops regularly.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Barley",
+      "standard_name": "Barley rust",
+      "cause": "Fungal diseases caused by Puccinia species.",
+      "symptoms": "Rust-colored or dark pustules develop on leaves and stems and can reduce green leaf area and grain production when infection is severe.",
+      "treatment": "Use locally recommended fungicides when disease pressure warrants treatment.",
+      "prevention": "Use resistant varieties where available, sow at the recommended time, and monitor fields regularly.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Mustard",
+      "standard_name": "Mustard Alternaria blight",
+      "cause": "Fungal disease commonly associated with Alternaria species.",
+      "symptoms": "Dark circular to irregular spots develop on leaves, stems, and pods. Older lesions may show concentric rings.",
+      "treatment": "Remove infected residue where practical and use locally recommended fungicides when disease pressure warrants treatment.",
+      "prevention": "Use healthy seed, avoid dense sowing, rotate crops, and maintain field sanitation.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Mustard",
+      "standard_name": "Mustard powdery mildew",
+      "cause": "Fungal disease caused by Erysiphe cruciferarum.",
+      "symptoms": "White powdery fungal growth develops on leaves, stems, and sometimes pods. Severe infection can reduce plant vigour.",
+      "treatment": "Improve air circulation and use locally recommended fungicides when necessary.",
+      "prevention": "Maintain appropriate spacing, avoid excessive nitrogen, and monitor the crop during favourable weather.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Rose",
+      "standard_name": "Rose black spot",
+      "cause": "Fungal disease caused by Diplocarpon rosae.",
+      "symptoms": "Black or dark circular spots develop on leaves, often followed by yellowing and premature leaf drop.",
+      "treatment": "Remove fallen and infected leaves and use locally recommended fungicides when disease pressure warrants treatment.",
+      "prevention": "Keep foliage dry where possible, improve air circulation, remove fallen leaves, and prune appropriately.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Rose",
+      "standard_name": "Rose botrytis blight",
+      "cause": "Fungal disease caused by Botrytis cinerea.",
+      "symptoms": "Brown lesions and gray fuzzy fungal growth develop on flowers, buds, and tender plant parts, especially under cool humid conditions.",
+      "treatment": "Remove infected flowers and plant material and improve ventilation. Use locally recommended fungicides when appropriate.",
+      "prevention": "Avoid prolonged flower wetness, provide good spacing, remove spent flowers, and maintain sanitation.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Marigold",
+      "standard_name": "Marigold botrytis blight",
+      "cause": "Fungal disease caused by Botrytis cinerea.",
+      "symptoms": "Brown water-soaked lesions and gray fungal growth develop on flowers, leaves, and stems under humid conditions.",
+      "treatment": "Remove infected flowers and plant material, improve ventilation, and use locally recommended fungicides when necessary.",
+      "prevention": "Avoid overhead irrigation, maintain plant spacing, and remove decaying plant material.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Lily",
+      "standard_name": "Lily botrytis blight",
+      "cause": "Fungal disease caused by Botrytis species.",
+      "symptoms": "Brown or water-soaked spots develop on leaves and flowers, followed by gray fungal growth during humid conditions.",
+      "treatment": "Remove infected plant parts and improve air circulation. Use locally recommended fungicides when disease pressure warrants treatment.",
+      "prevention": "Avoid prolonged leaf wetness, provide good spacing, and remove infected debris promptly.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Cabbage",
+      "standard_name": "Cabbage black rot",
+      "cause": "Bacterial disease caused by Xanthomonas campestris pv. campestris.",
+      "symptoms": "Yellow to brown V-shaped lesions develop from leaf margins and veins may become dark. Severe leaves can dry and fall.",
+      "treatment": "Remove severely infected plants and follow local bacterial disease-management recommendations.",
+      "prevention": "Use clean seed, crop rotation, good drainage, and avoid working with plants while foliage is wet.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Cauliflower",
+      "standard_name": "Cauliflower black rot",
+      "cause": "Bacterial disease caused by Xanthomonas campestris pv. campestris.",
+      "symptoms": "Yellow V-shaped leaf lesions develop from margins and darkening of veins may occur.",
+      "treatment": "Remove severely infected material and maintain field sanitation.",
+      "prevention": "Use clean seed, crop rotation, good drainage, and avoid handling wet plants.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Spinach",
+      "standard_name": "Spinach downy mildew",
+      "cause": "Fungal-like disease caused by Peronospora farinosa f. sp. spinaciae.",
+      "symptoms": "Yellow patches develop on upper leaf surfaces with gray-purple growth on the underside under humid conditions.",
+      "treatment": "Remove severely infected leaves and improve ventilation. Use locally recommended products when appropriate.",
+      "prevention": "Use resistant varieties where available, increase spacing, improve drainage, and avoid prolonged leaf wetness.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Okra",
+      "standard_name": "Okra yellow vein mosaic",
+      "cause": "Viral disease transmitted mainly by whiteflies.",
+      "symptoms": "Veins become bright yellow and the yellowing spreads through the leaf network. Plants may become stunted and produce fewer fruits.",
+      "treatment": "Remove severely infected plants where practical and manage whitefly populations according to local agricultural recommendations.",
+      "prevention": "Use healthy planting material, control whitefly vectors, remove infected plants early, and maintain field sanitation.",
+      "severity": "High"
+    },
+    {
+      "crop_name": "Pea",
+      "standard_name": "Pea powdery mildew",
+      "cause": "Fungal disease caused by Erysiphe pisi.",
+      "symptoms": "White powdery fungal growth appears on leaves, stems, and pods. Severe infection can reduce plant vigour and yield.",
+      "treatment": "Improve air circulation and use locally recommended fungicides when disease pressure warrants treatment.",
+      "prevention": "Use resistant varieties where available, maintain suitable spacing, and avoid excessive nitrogen.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Onion",
+      "standard_name": "Onion downy mildew",
+      "cause": "Fungal-like disease caused by Peronospora destructor.",
+      "symptoms": "Pale green or yellow patches develop on leaves, followed by grayish-purple fungal growth during humid conditions. Leaves may bend and collapse.",
+      "treatment": "Improve field ventilation and drainage and use locally recommended disease-management products when necessary.",
+      "prevention": "Use healthy bulbs or seedlings, avoid prolonged leaf wetness, maintain spacing, and rotate crops.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Onion",
+      "standard_name": "Onion purple blotch",
+      "cause": "Fungal disease caused by Alternaria porri.",
+      "symptoms": "Small water-soaked lesions develop on leaves and enlarge into purple or brown lesions surrounded by lighter areas.",
+      "treatment": "Remove infected debris and use locally recommended fungicides when disease pressure warrants treatment.",
+      "prevention": "Use healthy planting material, maintain field sanitation, improve air circulation, and avoid prolonged leaf wetness.",
+      "severity": "Moderate to High"
+    },
+    {
+      "crop_name": "Garlic",
+      "standard_name": "Garlic purple blotch",
+      "cause": "Fungal disease caused by Alternaria porri.",
+      "symptoms": "Small pale or water-soaked spots enlarge into purple-brown lesions on leaves and can cause premature drying.",
+      "treatment": "Remove infected plant debris and use locally recommended fungicides when required.",
+      "prevention": "Use healthy planting material, rotate crops, improve air circulation, and avoid prolonged leaf wetness.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Garlic",
+      "standard_name": "Garlic basal rot",
+      "cause": "Soil-borne fungal disease commonly associated with Fusarium species.",
+      "symptoms": "Leaves yellow and wilt, roots deteriorate, and the basal plate of bulbs becomes brown or rotted.",
+      "treatment": "Remove severely affected plants and improve drainage. Use locally recommended planting-material and disease-management practices.",
+      "prevention": "Use healthy cloves, avoid waterlogging, rotate crops, and maintain clean planting material.",
+      "severity": "High"
+    },
+    {
+      "crop_name": "Radish",
+      "standard_name": "Radish Alternaria leaf spot",
+      "cause": "Fungal disease caused by Alternaria species.",
+      "symptoms": "Small dark spots develop on leaves and may enlarge into circular brown lesions with concentric rings.",
+      "treatment": "Remove infected leaves and plant debris and use locally recommended fungicides when necessary.",
+      "prevention": "Use healthy seed, crop rotation, adequate spacing, and avoid prolonged leaf wetness.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Radish",
+      "standard_name": "Radish clubroot",
+      "cause": "Soil-borne disease caused by Plasmodiophora brassicae.",
+      "symptoms": "Roots develop enlarged irregular swellings and plants become stunted or wilt during water stress.",
+      "treatment": "Remove affected plants and avoid moving contaminated soil to clean fields. Follow local soil-management recommendations.",
+      "prevention": "Use resistant varieties where available, maintain suitable soil drainage and pH, rotate crops, and use clean planting areas.",
+      "severity": "High"
+    },
+    {
+      "crop_name": "Carrot",
+      "standard_name": "Carrot leaf blight",
+      "cause": "Fungal disease commonly associated with Alternaria dauci and related pathogens.",
+      "symptoms": "Small brown spots develop on leaves and enlarge into dark lesions. Severely affected foliage may dry and die back.",
+      "treatment": "Remove infected plant debris and use locally recommended fungicides when disease pressure warrants treatment.",
+      "prevention": "Use healthy seed, crop rotation, adequate spacing, and avoid prolonged leaf wetness.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Carrot",
+      "standard_name": "Carrot cavity spot",
+      "cause": "Root disease associated with several soil-borne organisms, including Pythium species.",
+      "symptoms": "Small sunken brown lesions or cavities develop on carrot roots, reducing market quality.",
+      "treatment": "Improve drainage and follow locally recommended soil and crop-management practices.",
+      "prevention": "Avoid excessive irrigation, maintain suitable soil drainage, rotate crops, and use healthy seed.",
+      "severity": "Moderate"
+    },
+    {
+      "crop_name": "Tulip",
+      "disease_name": "Botrytis Blight",
+      "standard_name": "Tulip botrytis blight",
+      "record_type": "disease",
+      "cause": "Botrytis species fungi, favored by cool, humid conditions and prolonged moisture.",
+      "symptoms": "Brown or water-soaked spots on leaves and flowers, gray mold growth, and decay of plant tissue.",
+      "treatment": "Remove and destroy infected plant parts, improve air circulation, and reduce excess moisture.",
+      "prevention": "Use healthy bulbs, provide good spacing and drainage, and avoid prolonged wet foliage.",
+      "severity": "Moderate to high if infection spreads rapidly during cool and humid conditions."
+    },
+    {
+      "crop_name": "Tulip",
+      "disease_name": "Bulb Rot",
+      "standard_name": "Tulip bulb rot",
+      "record_type": "disease",
+      "cause": "Soil-borne fungal or bacterial pathogens favored by excessive moisture and poor drainage.",
+      "symptoms": "Soft or rotting bulbs, poor emergence, yellowing foliage, and weak or dying plants.",
+      "treatment": "Remove rotting bulbs, improve drainage, and avoid planting damaged or infected bulbs.",
+      "prevention": "Plant healthy bulbs in well-drained soil and avoid excessive irrigation.",
+      "severity": "High when infected bulbs are stored or planted in wet conditions."
     }
   ],
   "needs_identification": [
