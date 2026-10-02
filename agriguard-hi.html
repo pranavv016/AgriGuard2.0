@@ -457,9 +457,9 @@ footer{
 <body>
 
 <header>
-    <a href="hindi.html" class="logo"><span class="logo-icon">🌱</span> AgriGuard</a>
+    <a href="agriguard-hi.html" class="logo"><span class="logo-icon">🌱</span> AgriGuard</a>
     <nav class="main-nav">
-        <a href="hindi.html" data-page="home">होम</a>
+        <a href="agriguard-hi.html" data-page="home">होम</a>
         <a href="about-hi.html" data-page="about">परिचय</a>
         <a href="diseases-hi.html" data-page="diseases">रोग</a>
         <a href="disease-predictor-hi.html" data-page="predictor">रोग जाँच</a>
@@ -1028,6 +1028,20 @@ footer{
         <label for="pd-image-crop">🌱 फ़सल का नाम</label>
         <select id="pd-image-crop">
             <option value="">फ़सल चुनें</option>
+            <option value="Apple">सेब</option>
+            <option value="Blueberry">ब्लूबेरी</option>
+            <option value="Cherry">चेरी</option>
+            <option value="Corn">मक्का</option>
+            <option value="Grape">अंगूर</option>
+            <option value="Orange">संतरा</option>
+            <option value="Peach">आड़ू</option>
+            <option value="Pepper">मिर्च</option>
+            <option value="Potato">आलू</option>
+            <option value="Raspberry">रास्पबेरी</option>
+            <option value="Soybean">सोयाबीन</option>
+            <option value="Squash">स्क्वैश</option>
+            <option value="Strawberry">स्ट्रॉबेरी</option>
+            <option value="Tomato">टमाटर</option>
         </select>
     </div>
 
@@ -1568,21 +1582,7 @@ function predictDisease() {
     const knowledge = findAgriGuardKnowledge(crop, best.name);
 
     if (knowledge && knowledgeBox) {
-        document.getElementById("pd-cause").textContent =
-            knowledge.cause || "उपलब्ध नहीं";
-
-        document.getElementById("pd-kb-symptoms").textContent =
-            knowledge.symptoms || "उपलब्ध नहीं";
-
-        document.getElementById("pd-treatment").textContent =
-            knowledge.treatment || "उपलब्ध नहीं";
-
-        document.getElementById("pd-prevention").textContent =
-            knowledge.prevention || "उपलब्ध नहीं";
-
-        document.getElementById("pd-severity").textContent =
-            knowledge.severity || "उपलब्ध नहीं";
-
+        renderAgriGuardHindiKnowledge(knowledge);
         knowledgeBox.style.display = "block";
     }
 
@@ -1875,7 +1875,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ================= SPA ROUTER ================= */
 const pageMap = {
-    "hindi.html": "home",
+    "agriguard-hi.html": "home",
     "about-hi.html": "about",
     "diseases-hi.html": "diseases",
     "disease-predictor-hi.html": "predictor",
@@ -2188,6 +2188,379 @@ async function predictAgriGuardImage(imageElement) {
 
 
 <script>
+
+<script>
+/* ============================================================
+   AGRIGUARD HINDI RESULT LOCALIZATION
+   Display-only localization layer.
+   Does NOT modify the model, diseaseDB or shared JSON.
+   ============================================================ */
+
+const agriGuardHindiDiseaseNames = {
+
+    /* PlantVillage / TensorFlow.js classes */
+    "Apple___Apple_scab": "सेब — स्कैब रोग",
+    "Apple___Black_rot": "सेब — ब्लैक रॉट",
+    "Apple___Cedar_apple_rust": "सेब — सीडर एप्पल रस्ट",
+    "Apple___healthy": "सेब — स्वस्थ",
+
+    "Blueberry___healthy": "ब्लूबेरी — स्वस्थ",
+
+    "Cherry_(including_sour)___Powdery_mildew":
+        "चेरी — पाउडरी मिल्ड्यू",
+
+    "Cherry_(including_sour)___healthy":
+        "चेरी — स्वस्थ",
+
+    "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot":
+        "मक्का — सर्कोस्पोरा लीफ स्पॉट",
+
+    "Corn_(maize)___Common_rust_":
+        "मक्का — कॉमन रस्ट",
+
+    "Corn_(maize)___Northern_Leaf_Blight":
+        "मक्का — नॉर्दर्न लीफ ब्लाइट",
+
+    "Corn_(maize)___healthy":
+        "मक्का — स्वस्थ",
+
+    "Grape___Black_rot":
+        "अंगूर — ब्लैक रॉट",
+
+    "Grape___Esca_(Black_Measles)":
+        "अंगूर — एस्का / ब्लैक मीज़ल्स",
+
+    "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)":
+        "अंगूर — लीफ ब्लाइट",
+
+    "Grape___healthy":
+        "अंगूर — स्वस्थ",
+
+    "Orange___Haunglongbing_(Citrus_greening)":
+        "संतरा — हुआंगलोंगबिंग / साइट्रस ग्रीनिंग",
+
+    "Peach___Bacterial_spot":
+        "आड़ू — बैक्टीरियल स्पॉट",
+
+    "Peach___healthy":
+        "आड़ू — स्वस्थ",
+
+    "Pepper,_bell___Bacterial_spot":
+        "मिर्च — बैक्टीरियल स्पॉट",
+
+    "Pepper,_bell___healthy":
+        "मिर्च — स्वस्थ",
+
+    "Potato___Early_blight":
+        "आलू — अर्ली ब्लाइट",
+
+    "Potato___Late_blight":
+        "आलू — लेट ब्लाइट",
+
+    "Potato___healthy":
+        "आलू — स्वस्थ",
+
+    "Raspberry___healthy":
+        "रास्पबेरी — स्वस्थ",
+
+    "Soybean___healthy":
+        "सोयाबीन — स्वस्थ",
+
+    "Squash___Powdery_mildew":
+        "स्क्वैश — पाउडरी मिल्ड्यू",
+
+    "Strawberry___Leaf_scorch":
+        "स्ट्रॉबेरी — लीफ स्कॉर्च",
+
+    "Strawberry___healthy":
+        "स्ट्रॉबेरी — स्वस्थ",
+
+    "Tomato___Bacterial_spot":
+        "टमाटर — बैक्टीरियल स्पॉट",
+
+    "Tomato___Early_blight":
+        "टमाटर — अर्ली ब्लाइट",
+
+    "Tomato___Late_blight":
+        "टमाटर — लेट ब्लाइट",
+
+    "Tomato___Leaf_Mold":
+        "टमाटर — लीफ मोल्ड",
+
+    "Tomato___Septoria_leaf_spot":
+        "टमाटर — सेप्टोरिया लीफ स्पॉट",
+
+    "Tomato___Spider_mites Two-spotted_spider_mite":
+        "टमाटर — स्पाइडर माइट",
+
+    "Tomato___Target_Spot":
+        "टमाटर — टार्गेट स्पॉट",
+
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus":
+        "टमाटर — येलो लीफ कर्ल वायरस",
+
+    "Tomato___Tomato_mosaic_virus":
+        "टमाटर — टोमैटो मोज़ेक वायरस",
+
+    "Tomato___healthy":
+        "टमाटर — स्वस्थ"
+};
+
+
+/* ------------------------------------------------------------
+   Normalize AI labels for lookup.
+   ------------------------------------------------------------ */
+
+function normalizeAgriGuardHindiKey(value) {
+
+    return String(value || "")
+        .trim()
+        .replace(/\s+/g, " ");
+
+}
+
+
+/* ------------------------------------------------------------
+   Hindi display name for AI prediction.
+   ------------------------------------------------------------ */
+
+function getAgriGuardHindiDiseaseName(label) {
+
+    const raw = normalizeAgriGuardHindiKey(label);
+
+    if (agriGuardHindiDiseaseNames[raw]) {
+        return agriGuardHindiDiseaseNames[raw];
+    }
+
+    /*
+     * Try the normalised form used by some PlantVillage labels.
+     */
+    const normalized = raw
+        .replace(/\s+/g, " ");
+
+    if (agriGuardHindiDiseaseNames[normalized]) {
+        return agriGuardHindiDiseaseNames[normalized];
+    }
+
+    /*
+     * Fallback: convert the technical class name into readable text
+     * without exposing the raw Python/PlantVillage formatting.
+     */
+    return formatAgriGuardAIClass(raw)
+        .replace(/\bhealthy\b/gi, "स्वस्थ")
+        .replace(/\bEarly blight\b/gi, "अर्ली ब्लाइट")
+        .replace(/\bLate blight\b/gi, "लेट ब्लाइट")
+        .replace(/\bPowdery mildew\b/gi, "पाउडरी मिल्ड्यू")
+        .replace(/\bBacterial spot\b/gi, "बैक्टीरियल स्पॉट")
+        .replace(/\bBlack rot\b/gi, "ब्लैक रॉट")
+        .replace(/\bLeaf mold\b/gi, "लीफ मोल्ड")
+        .replace(/\bLeaf scorch\b/gi, "लीफ स्कॉर्च")
+        .replace(/\bTarget spot\b/gi, "टार्गेट स्पॉट")
+        .replace(/\bSeptoria leaf spot\b/gi, "सेप्टोरिया लीफ स्पॉट")
+        .replace(/\bCommon rust\b/gi, "कॉमन रस्ट")
+        .replace(/\bNorthern Leaf Blight\b/gi, "नॉर्दर्न लीफ ब्लाइट")
+        .replace(/\bCercospora leaf spot\b/gi, "सर्कोस्पोरा लीफ स्पॉट")
+        .replace(/\bSpider mites\b/gi, "स्पाइडर माइट")
+        .replace(/\bTomato mosaic virus\b/gi, "टोमैटो मोज़ेक वायरस")
+        .replace(/\bTomato Yellow Leaf Curl Virus\b/gi, "टोमैटो येलो लीफ कर्ल वायरस")
+        .replace(/\bCitrus greening\b/gi, "साइट्रस ग्रीनिंग")
+        .trim();
+
+}
+
+
+/* ------------------------------------------------------------
+   Hindi labels for knowledge-base fields.
+   ------------------------------------------------------------ */
+
+function getAgriGuardHindiKnowledge(knowledge) {
+
+    if (!knowledge) {
+        return null;
+    }
+
+    /*
+     * IMPORTANT:
+     * The shared knowledge base is English.
+     * Never expose its English paragraphs directly on the Hindi page.
+     */
+
+    const disease =
+        String(
+            knowledge.standard_name ||
+            knowledge.disease_name ||
+            ""
+        ).toLowerCase();
+
+    let result = {
+        cause: "रोग का कारण संबंधित रोगजनक या पर्यावरणीय परिस्थितियों से जुड़ा हो सकता है।",
+        symptoms: "पत्तियों, तनों, जड़ों या फलों में रोग के अनुसार अलग-अलग लक्षण दिखाई दे सकते हैं।",
+        treatment: "प्रभावित भागों को हटाएँ, खेत की स्वच्छता बनाए रखें और स्थानीय कृषि विशेषज्ञ की सलाह के अनुसार उपचार करें।",
+        prevention: "स्वस्थ रोपण सामग्री का उपयोग करें, खेत की स्वच्छता रखें और फसल की नियमित निगरानी करें।",
+        severity: "मध्यम से अधिक"
+    };
+
+
+    /* More specific Hindi guidance for common diseases. */
+
+    if (disease.includes("coffee leaf rust")) {
+
+        result.cause =
+            "यह हेमिलिया वास्टाट्रिक्स नामक फफूंद से होने वाला रोग है।";
+
+        result.symptoms =
+            "पत्तियों की निचली सतह पर पीले से नारंगी-पीले रंग के जंग जैसे चूर्णयुक्त धब्बे दिखाई दे सकते हैं। अधिक संक्रमण में पत्तियाँ समय से पहले गिर सकती हैं।";
+
+        result.treatment =
+            "अधिक प्रभावित पत्तियों को जहाँ संभव हो हटाएँ और पौधों के बीच हवा का आवागमन बढ़ाएँ। फफूंदनाशी का उपयोग स्थानीय कृषि सलाह और उत्पाद के लेबल के अनुसार करें।";
+
+        result.prevention =
+            "उपलब्ध होने पर रोग-रोधी या सहनशील किस्में अपनाएँ, छाया व पौधों की छंटाई का उचित प्रबंधन करें और नियमित निगरानी रखें.";
+
+    } else if (disease.includes("bacterial blight")) {
+
+        result.cause =
+            "यह एक जीवाणुजनित रोग है, जो सामान्यतः ज़ैंथोमोनास समूह के जीवाणुओं से जुड़ा होता है।";
+
+        result.symptoms =
+            "पत्तियों, शिराओं, तनों या फलियों पर पानी से भीगे हुए से गहरे रंग के घाव या धब्बे दिखाई दे सकते हैं।";
+
+        result.treatment =
+            "अधिक संक्रमित पौधों के हिस्सों को हटाएँ और खेत की स्वच्छता बनाए रखें। स्वस्थ बीज तथा उपलब्ध होने पर सहनशील किस्मों का उपयोग करें।";
+
+        result.prevention =
+            "स्वस्थ बीज का उपयोग करें, खेत की स्वच्छता रखें, अनावश्यक पत्ती-नमी से बचें और फसल की नियमित निगरानी करें.";
+
+    } else if (disease.includes("powdery mildew")) {
+
+        result.cause =
+            "यह पाउडरी मिल्ड्यू समूह की फफूंद से होने वाला रोग है।";
+
+        result.symptoms =
+            "पत्तियों की सतह पर सफेद चूर्ण जैसी फफूंद की परत दिखाई देती है। अधिक संक्रमण में पौधे की प्रकाश संश्लेषण क्षमता प्रभावित हो सकती है।";
+
+        result.treatment =
+            "पौधों के बीच हवा का आवागमन बढ़ाएँ और अत्यधिक नाइट्रोजन से बचें। गंभीर संक्रमण में स्थानीय कृषि सलाह के अनुसार अनुमोदित फफूंदनाशी का उपयोग करें।";
+
+        result.prevention =
+            "उचित पौध दूरी और हवा का आवागमन बनाए रखें, अत्यधिक नाइट्रोजन से बचें और अनुकूल मौसम में नियमित निगरानी करें.";
+
+    } else if (disease.includes("early blight")) {
+
+        result.cause =
+            "यह एक फफूंदजनित रोग है जो सामान्यतः पत्तियों और पौधे के अन्य भागों को प्रभावित करता है।";
+
+        result.symptoms =
+            "पत्तियों पर भूरे या गहरे धब्बे दिखाई दे सकते हैं और संक्रमण बढ़ने पर पत्तियाँ समय से पहले गिर सकती हैं।";
+
+        result.treatment =
+            "संक्रमित पत्तियों को हटाएँ, खेत की स्वच्छता बनाए रखें और पत्तियों पर लंबे समय तक नमी रहने से बचाएँ।";
+
+        result.prevention =
+            "फसल अवशेषों का उचित प्रबंधन करें, पौधों के बीच पर्याप्त हवा का आवागमन रखें और नियमित निगरानी करें.";
+
+    } else if (disease.includes("late blight")) {
+
+        result.cause =
+            "यह नमी और अनुकूल मौसम में तेजी से फैलने वाला रोग है जो फसल के पत्तों तथा अन्य भागों को प्रभावित कर सकता है।";
+
+        result.symptoms =
+            "पत्तियों पर गहरे, पानी से भीगे हुए धब्बे दिखाई दे सकते हैं। अनुकूल परिस्थितियों में रोग तेजी से फैल सकता है।";
+
+        result.treatment =
+            "संक्रमित भागों को हटाएँ, खेत में अच्छी जल निकासी रखें और पत्तियों को लंबे समय तक गीला रहने से बचाएँ।";
+
+        result.prevention =
+            "खेत की नियमित निगरानी करें, उचित जल निकासी रखें और रोग के अनुकूल ठंडे व नम मौसम में विशेष सावधानी बरतें.";
+
+    } else if (disease.includes("black rot")) {
+
+        result.cause =
+            "यह एक फफूंदजनित रोग है जो पौधे के पत्तों और फलों को प्रभावित कर सकता है।";
+
+        result.symptoms =
+            "पत्तियों या फलों पर गहरे रंग के धब्बे और सड़न दिखाई दे सकती है।";
+
+        result.treatment =
+            "संक्रमित भागों को हटाएँ, खेत की स्वच्छता बनाए रखें और प्रभावित फसल सामग्री को खेत में न छोड़ें।";
+
+        result.prevention =
+            "स्वस्थ रोपण सामग्री का उपयोग करें, फसल अवशेषों का प्रबंधन करें और नियमित निगरानी रखें.";
+
+    }
+
+
+    return result;
+}
+
+
+/* ------------------------------------------------------------
+   Localized knowledge-box renderer.
+   ------------------------------------------------------------ */
+
+function renderAgriGuardHindiKnowledge(knowledge) {
+
+    if (!knowledge) {
+        return;
+    }
+
+    const hindi =
+        getAgriGuardHindiKnowledge(knowledge);
+
+    const cause =
+        document.getElementById("pd-cause");
+
+    const symptoms =
+        document.getElementById("pd-kb-symptoms");
+
+    const treatment =
+        document.getElementById("pd-treatment");
+
+    const prevention =
+        document.getElementById("pd-prevention");
+
+    const severity =
+        document.getElementById("pd-severity");
+
+    if (cause) {
+        cause.textContent = hindi.cause;
+    }
+
+    if (symptoms) {
+        symptoms.textContent = hindi.symptoms;
+    }
+
+    if (treatment) {
+        treatment.textContent = hindi.treatment;
+    }
+
+    if (prevention) {
+        prevention.textContent = hindi.prevention;
+    }
+
+    if (severity) {
+        severity.textContent = hindi.severity;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   Override the AI display only.
+   ------------------------------------------------------------ */
+
+const agriGuardHindiOriginalAIClass =
+    window.formatAgriGuardAIClass;
+
+window.formatAgriGuardAIClass = function(label) {
+
+    return getAgriGuardHindiDiseaseName(label);
+
+};
+
+</script>
+
+
 /* ============================================================
    AGRIGUARD AI — HINDI PHOTO CONNECTION
    ============================================================ */
@@ -2320,14 +2693,17 @@ async function runAgriGuardPhotoAI(selectedCrop) {
 
         if (knowledge) {
 
+            const hindiKnowledge =
+                getAgriGuardHindiKnowledge(knowledge);
+
             if (desc) {
                 desc.textContent =
-                    knowledge.symptoms || "";
+                    hindiKnowledge.symptoms;
             }
 
             if (advice) {
                 advice.textContent =
-                    knowledge.treatment || "";
+                    hindiKnowledge.treatment;
             }
 
             const knowledgeBox =
@@ -2365,30 +2741,7 @@ async function runAgriGuardPhotoAI(selectedCrop) {
                         "pd-severity"
                     );
 
-                if (cause) {
-                    cause.textContent =
-                        knowledge.cause || "";
-                }
-
-                if (symptoms) {
-                    symptoms.textContent =
-                        knowledge.symptoms || "";
-                }
-
-                if (treatment) {
-                    treatment.textContent =
-                        knowledge.treatment || "";
-                }
-
-                if (prevention) {
-                    prevention.textContent =
-                        knowledge.prevention || "";
-                }
-
-                if (severity) {
-                    severity.textContent =
-                        knowledge.severity || "";
-                }
+                renderAgriGuardHindiKnowledge(knowledge);
             }
 
         } else {
