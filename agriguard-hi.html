@@ -2031,24 +2031,9 @@ async function loadAgriGuardAIModel() {
         );
 
         /*
-         * If the user selected/took a photo while the model was loading,
-         * run the pending image automatically now.
+         * Image prediction is manual only.
+         * The user must select a crop and press "🔎 रोग खोजें".
          */
-        const pendingPreview = document.getElementById("pd-preview");
-
-        if (
-            pendingPreview &&
-            pendingPreview.src &&
-            pendingPreview.src !== window.location.href
-        ) {
-            console.log(
-                "AgriGuard AI: pending photo detected; running inference..."
-            );
-
-            setTimeout(() => {
-                runAgriGuardPhotoAI();
-            }, 0);
-        }
 
         return true;
 
@@ -2344,7 +2329,9 @@ function getAgriGuardHindiDiseaseName(label) {
      * Fallback: convert the technical class name into readable text
      * without exposing the raw Python/PlantVillage formatting.
      */
-    return formatAgriGuardAIClass(raw)
+    return (agriGuardHindiOriginalAIClass
+        ? agriGuardHindiOriginalAIClass(raw)
+        : raw)
         .replace(/\bhealthy\b/gi, "स्वस्थ")
         .replace(/\bEarly blight\b/gi, "अर्ली ब्लाइट")
         .replace(/\bLate blight\b/gi, "लेट ब्लाइट")
