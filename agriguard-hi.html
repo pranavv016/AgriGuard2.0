@@ -993,15 +993,15 @@ footer{
 <div class="page-hero">
     <span class="tag">रोग जाँचकर्ता</span>
     <h1>फ़सल रोग जाँचकर्ता 🔍</h1>
-    <p>प्रभावित पत्ती या पौधे की तस्वीर जोड़ें और अपनी फ़सल व दिख रहे लक्षण चुनें, ताकि एक शैक्षिक, संकेतात्मक मिलान मिल सके।</p>
+    <p>तस्वीर अपलोड करके सीधे AI से रोग की पहचान करें। यदि तस्वीर उपलब्ध नहीं है, तो फ़सल और लक्षण चुनकर शैक्षिक, संकेतात्मक मिलान प्राप्त करें।</p>
 </div>
 
 <section>
 
     <!-- ===== PHOTO UPLOAD / CAMERA ===== -->
     <div class="photo-box">
-        <h3>📷 पौधे या पत्ती की तस्वीर जोड़ें (वैकल्पिक)</h3>
-        <p class="photo-note">तस्वीर रिकॉर्ड व संदर्भ के लिए है। सटीक मिलान के लिए नीचे फ़सल व लक्षण भी चुनें।</p>
+        <h3>📷 विकल्प 1 — तस्वीर से रोग की पहचान करें</h3>
+        <p class="photo-note">प्रभावित पत्ती या पौधे की साफ़ तस्वीर अपलोड करें या कैमरे से लें। AgriGuard तस्वीर का अपने AI मॉडल से स्वचालित विश्लेषण करेगा। तस्वीर से रोग की पहचान के लिए फ़सल और लक्षण चुनना आवश्यक नहीं है।</p>
 
         <div class="photo-actions">
             <button type="button" class="action-btn secondary" id="pd-upload-btn">🖼️ तस्वीर अपलोड करें</button>
@@ -1024,10 +1024,16 @@ footer{
                 <button type="button" class="photo-remove" id="pd-remove-btn" aria-label="तस्वीर हटाएँ">✕</button>
             </div>
             <p class="photo-meta" id="pd-photo-meta"></p>
+            <p id="pd-ai-status" style="margin:10px 0 0;font-size:13px;color:#4f6b52;">
+                तस्वीर चुनते ही AI रोग पहचान शुरू हो जाएगी।
+            </p>
         </div>
     </div>
 
-    <!-- ===== SYMPTOM FORM ===== -->
+    <!-- ===== SYMPTOM FALLBACK ===== -->
+    <div style="text-align:center;margin:24px auto 12px;font-weight:800;color:#2c4a2e;font-size:15px;">
+        या — तस्वीर नहीं है? लक्षणों से रोग की पहचान करें
+    </div>
     <div class="tool-box">
         <div class="field-grid">
             <div class="field">
@@ -1037,7 +1043,7 @@ footer{
         </div>
 
         <label style="font-size:14px;font-weight:600;color:#2c4a2e;display:block;margin-bottom:10px;">
-            दिख रहे लक्षण (जो लागू हों वे सभी चुनें)
+            फ़सल चुनें और दिखाई दे रहे सभी लक्षण चुनें
         </label>
         <div class="symptom-grid">
             <label class="symptom-check"><input type="checkbox" value="1"> पत्तियों पर पीले/भूरे धब्बे</label>
@@ -1052,9 +1058,9 @@ footer{
             <label class="symptom-check"><input type="checkbox" value="10"> पत्तियों पर काले धब्बे व झड़ना</label>
         </div>
 
-        <button class="action-btn" onclick="predictDisease()">संभावित रोग जाँचें</button>
+        <button class="action-btn" onclick="predictDisease()">🔎 लक्षणों से रोग की जाँच करें</button>
 
-        <div class="result-box" id="pd-result">
+        <div class="result-box" id="pd-result" aria-live="polite">
             <h4 id="pd-title"></h4>
             <p id="pd-confidence"></p>
             <p id="pd-desc"></p>
@@ -2208,6 +2214,18 @@ async function runAgriGuardPhotoAI() {
 
     if (agriGuardAIStatus !== "ready") {
 
+        const aiStatus =
+            document.getElementById("pd-ai-status");
+
+        if (aiStatus) {
+            aiStatus.textContent =
+                agriGuardAIStatus === "loading"
+                    ? "AI मॉडल लोड हो रहा है — तस्वीर तैयार होते ही उसका स्वचालित विश्लेषण होगा।"
+                    : "AI मॉडल उपलब्ध नहीं है। आप नीचे दिए गए लक्षण-आधारित विकल्प का उपयोग कर सकते हैं।";
+
+            aiStatus.style.color = "#7a5a00";
+        }
+
         console.warn(
             "AgriGuard AI: model is not ready.",
             agriGuardAIStatus
@@ -2225,6 +2243,15 @@ async function runAgriGuardPhotoAI() {
             "AgriGuard AI prediction:",
             result
         );
+
+        const aiStatus =
+            document.getElementById("pd-ai-status");
+
+        if (aiStatus) {
+            aiStatus.textContent =
+                "✓ तस्वीर का विश्लेषण पूरा हो गया — AI रोग पहचान तैयार है।";
+            aiStatus.style.color = "#2e6b35";
+        }
 
         const resultBox =
             document.getElementById("pd-result");
@@ -2377,6 +2404,16 @@ async function runAgriGuardPhotoAI() {
         return result;
 
     } catch (error) {
+
+        const aiStatus =
+            document.getElementById("pd-ai-status");
+
+        if (aiStatus) {
+            aiStatus.textContent =
+                "तस्वीर का विश्लेषण पूरा नहीं हो सका। आप नीचे दिए गए लक्षण-आधारित विकल्प का उपयोग कर सकते हैं।";
+
+            aiStatus.style.color = "#9a3d2f";
+        }
 
         console.error(
             "AgriGuard AI image prediction failed:",
