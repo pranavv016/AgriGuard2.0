@@ -1001,7 +1001,7 @@ footer{
     <!-- ===== PHOTO UPLOAD / CAMERA ===== -->
     <div class="photo-box">
         <h3>📷 विकल्प 1 — तस्वीर से रोग की पहचान करें</h3>
-        <p class="photo-note">प्रभावित पत्ती या पौधे की साफ़ तस्वीर अपलोड करें या कैमरे से लें। AgriGuard तस्वीर का अपने AI मॉडल से स्वचालित विश्लेषण करेगा। तस्वीर से रोग की पहचान के लिए फ़सल और लक्षण चुनना आवश्यक नहीं है।</p>
+        <p class="photo-note">प्रभावित पत्ती या पौधे की साफ़ तस्वीर अपलोड करें या कैमरे से लें। फ़सल का नाम चुनें और रोग की AI पहचान शुरू करने के लिए रोग खोजें बटन दबाएँ।</p>
 
         <div class="photo-actions">
             <button type="button" class="action-btn secondary" id="pd-upload-btn">🖼️ तस्वीर अपलोड करें</button>
@@ -1024,7 +1024,23 @@ footer{
                 <button type="button" class="photo-remove" id="pd-remove-btn" aria-label="तस्वीर हटाएँ">✕</button>
             </div>
             <p class="photo-meta" id="pd-photo-meta"></p>
-            <p id="pd-ai-status" style="margin:10px 0 0;font-size:13px;color:#4f6b52;">
+            <div class="field" style="margin-top:16px;">
+        <label for="pd-image-crop">🌱 फ़सल का नाम</label>
+        <select id="pd-image-crop">
+            <option value="">फ़सल चुनें</option>
+        </select>
+    </div>
+
+    <button
+        type="button"
+        class="action-btn"
+        id="pd-image-search-btn"
+        style="margin-top:12px;"
+    >
+        🔎 रोग खोजें
+    </button>
+
+    <p id="pd-ai-status" style="margin:10px 0 0;font-size:13px;color:#4f6b52;">
                 तस्वीर चुनते ही AI रोग पहचान शुरू हो जाएगी।
             </p>
         </div>
@@ -2200,7 +2216,7 @@ function getAgriGuardAICrop(label) {
         .trim();
 }
 
-async function runAgriGuardPhotoAI() {
+async async function runAgriGuardPhotoAI(selectedCrop) {
 
     const preview =
         document.getElementById("pd-preview");
@@ -2220,7 +2236,7 @@ async function runAgriGuardPhotoAI() {
         if (aiStatus) {
             aiStatus.textContent =
                 agriGuardAIStatus === "loading"
-                    ? "AI मॉडल लोड हो रहा है — तस्वीर तैयार होते ही उसका स्वचालित विश्लेषण होगा।"
+                    ? "AI मॉडल लोड हो रहा है — मॉडल तैयार होने के बाद रोग खोजें दबाएँ।"
                     : "AI मॉडल उपलब्ध नहीं है। आप नीचे दिए गए लक्षण-आधारित विकल्प का उपयोग कर सकते हैं।";
 
             aiStatus.style.color = "#7a5a00";
@@ -2288,6 +2304,7 @@ async function runAgriGuardPhotoAI() {
         }
 
         const crop =
+            selectedCrop ||
             getAgriGuardAICrop(result.label);
 
         const diseaseName =
@@ -2445,9 +2462,10 @@ function connectAgriGuardPhotoAI() {
         return;
     }
 
-    preview.addEventListener("load", () => {
-        runAgriGuardPhotoAI();
-    });
+    /*
+     * Image prediction is NOT automatic.
+     * User selects crop and presses रोग खोजें.
+     */
 
     preview.dataset.agriGuardAIConnected =
         "true";
@@ -2456,6 +2474,117 @@ function connectAgriGuardPhotoAI() {
         "AgriGuard AI: Hindi disease photo connection ready."
     );
 }
+
+
+/* =====================================================
+   IMAGE DIAGNOSIS — CROP + SEARCH
+   ===================================================== */
+
+function populateImageDiseaseCropSelect() {
+
+    const select =
+        document.getElementById("pd-image-crop");
+
+    if (!select) return;
+
+    const crops = [
+        "Apple",
+        "Blueberry",
+        "Cherry",
+        "Corn",
+        "Grape",
+        "Orange",
+        "Peach",
+        "Pepper",
+        "Potato",
+        "Raspberry",
+        "Soybean",
+        "Squash",
+        "Strawberry",
+        "Tomato"
+    ];
+
+    select.innerHTML =
+        '<option value="">फ़सल चुनें</option>';
+
+    crops.forEach(crop => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = crop;
+
+        option.textContent =
+            typeof cropNamesHindi !== "undefined" &&
+            cropNamesHindi[crop]
+                ? cropNamesHindi[crop]
+                : crop;
+
+        select.appendChild(option);
+    });
+}
+
+
+function searchImageDisease() {
+
+    const preview =
+        document.getElementById("pd-preview");
+
+    const cropSelect =
+        document.getElementById("pd-image-crop");
+
+    const status =
+        document.getElementById("pd-ai-status");
+
+    if (!preview || !preview.src ||
+        preview.src === window.location.href) {
+
+        if (status) {
+            status.textContent =
+                "कृपया पहले पौधे या पत्ती की तस्वीर अपलोड करें।";
+            status.style.color = "#9a3d2f";
+        }
+
+        return;
+    }
+
+    if (!cropSelect || !cropSelect.value) {
+
+        if (status) {
+            status.textContent =
+                "रोग खोजने से पहले फ़सल का नाम चुनें।";
+            status.style.color = "#9a3d2f";
+        }
+
+        return;
+    }
+
+    if (status) {
+        status.textContent =
+            cropSelect.value +
+            " की तस्वीर का AI विश्लेषण किया जा रहा है...";
+        status.style.color = "#7a5a00";
+    }
+
+    runAgriGuardPhotoAI(cropSelect.value);
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    populateImageDiseaseCropSelect();
+
+    const searchButton =
+        document.getElementById("pd-image-search-btn");
+
+    if (searchButton) {
+        searchButton.addEventListener(
+            "click",
+            searchImageDisease
+        );
+    }
+});
+
 
 connectAgriGuardPhotoAI();
 </script>

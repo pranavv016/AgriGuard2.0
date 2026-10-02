@@ -1005,7 +1005,7 @@ footer{
     <!-- ===== PHOTO UPLOAD / CAMERA ===== -->
     <div class="photo-box">
         <h3>📷 Option 1 — Diagnose from Image</h3>
-        <p class="photo-note">Upload a clear photo of the affected leaf or plant, or take one with your camera. AgriGuard will automatically analyze the image using its AI model. Crop and symptoms are not required for image diagnosis.</p>
+        <p class="photo-note">Upload a clear photo of the affected leaf or plant, or take one with your camera. Select the crop name and press Search Disease to run the AI analysis.</p>
 
         <div class="photo-actions">
             <button type="button" class="action-btn secondary" id="pd-upload-btn">🖼️ Upload Photo</button>
@@ -1027,9 +1027,27 @@ footer{
                 <img class="photo-preview" id="pd-preview" alt="Added photo">
                 <button type="button" class="photo-remove" id="pd-remove-btn" aria-label="Remove photo">✕</button>
             </div>
+
             <p class="photo-meta" id="pd-photo-meta"></p>
+
+            <div class="field" style="margin-top:16px;">
+                <label for="pd-image-crop">🌱 Crop Name</label>
+                <select id="pd-image-crop">
+                    <option value="">Select crop</option>
+                </select>
+            </div>
+
+            <button
+                type="button"
+                class="action-btn"
+                id="pd-image-search-btn"
+                style="margin-top:12px;"
+            >
+                🔎 Search Disease
+            </button>
+
             <p id="pd-ai-status" style="margin:10px 0 0;font-size:13px;color:#4f6b52;">
-                Select an image to start AI disease analysis automatically.
+                Upload a photo, select the crop name, then press Search Disease.
             </p>
         </div>
     </div>
@@ -1302,24 +1320,9 @@ async function loadAgriGuardAIModel() {
         );
 
         /*
-         * If the user selected/took a photo while the model was loading,
-         * run the pending image automatically now.
+         * Image prediction is started only after the user
+         * selects a crop and presses Search Disease.
          */
-        const pendingPreview = document.getElementById("pd-preview");
-
-        if (
-            pendingPreview &&
-            pendingPreview.src &&
-            pendingPreview.src !== window.location.href
-        ) {
-            console.log(
-                "AgriGuard AI: pending photo detected; running inference..."
-            );
-
-            setTimeout(() => {
-                runAgriGuardPhotoAI();
-            }, 0);
-        }
 
         return true;
 
@@ -1448,7 +1451,7 @@ function getAgriGuardAICrop(label) {
         .trim();
 }
 
-async function runAgriGuardPhotoAI() {
+async function runAgriGuardPhotoAI(selectedCrop) {
     const preview = document.getElementById("pd-preview");
 
     if (!preview) {
@@ -1603,9 +1606,10 @@ function connectAgriGuardPhotoAI() {
         return;
     }
 
-    preview.addEventListener("load", () => {
-        runAgriGuardPhotoAI();
-    });
+    /*
+     * Image prediction is intentionally NOT automatic.
+     * The user must select the crop and press Search Disease.
+     */
 
     preview.dataset.agriGuardAIConnected = "true";
 
@@ -1613,6 +1617,118 @@ function connectAgriGuardPhotoAI() {
 }
 
 connectAgriGuardPhotoAI();
+
+
+/* =====================================================
+   IMAGE DIAGNOSIS — CROP + SEARCH
+   ===================================================== */
+
+function populateImageDiseaseCropSelect() {
+
+    const select =
+        document.getElementById("pd-image-crop");
+
+    if (!select) return;
+
+    /*
+     * Keep the image crop selector separate from
+     * the symptom predictor crop selector.
+     */
+
+    const crops = [
+        "Apple",
+        "Blueberry",
+        "Cherry",
+        "Corn",
+        "Grape",
+        "Orange",
+        "Peach",
+        "Pepper",
+        "Potato",
+        "Raspberry",
+        "Soybean",
+        "Squash",
+        "Strawberry",
+        "Tomato"
+    ];
+
+    select.innerHTML =
+        '<option value="">Select crop</option>';
+
+    crops.forEach(crop => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = crop;
+        option.textContent = crop;
+
+        select.appendChild(option);
+    });
+}
+
+
+function searchImageDisease() {
+
+    const preview =
+        document.getElementById("pd-preview");
+
+    const cropSelect =
+        document.getElementById("pd-image-crop");
+
+    const status =
+        document.getElementById("pd-ai-status");
+
+    if (!preview || !preview.src ||
+        preview.src === window.location.href) {
+
+        if (status) {
+            status.textContent =
+                "Please upload or take a plant/leaf photo first.";
+            status.style.color = "#9a3d2f";
+        }
+
+        return;
+    }
+
+    if (!cropSelect || !cropSelect.value) {
+
+        if (status) {
+            status.textContent =
+                "Please select the crop name before searching.";
+            status.style.color = "#9a3d2f";
+        }
+
+        return;
+    }
+
+    if (status) {
+        status.textContent =
+            "Analyzing the image for " +
+            cropSelect.value +
+            "...";
+        status.style.color = "#7a5a00";
+    }
+
+    runAgriGuardPhotoAI(cropSelect.value);
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    populateImageDiseaseCropSelect();
+
+    const searchButton =
+        document.getElementById("pd-image-search-btn");
+
+    if (searchButton) {
+
+        searchButton.addEventListener(
+            "click",
+            searchImageDisease
+        );
+    }
+});
 
 
 /* =====================================================
