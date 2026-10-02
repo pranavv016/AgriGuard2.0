@@ -997,15 +997,15 @@ footer{
 <div class="page-hero">
     <span class="tag">Disease Predictor</span>
     <h1>Crop Disease Predictor 🔍</h1>
-    <p>Add a photo of the affected leaf or plant and select your crop and the symptoms you see, to get an educational, indicative match.</p>
+    <p>Upload a photo for direct AI disease prediction. If you do not have an image, select the crop and symptoms to get an educational, indicative match.</p>
 </div>
 
 <section>
 
     <!-- ===== PHOTO UPLOAD / CAMERA ===== -->
     <div class="photo-box">
-        <h3>📷 Add a Photo of the Plant or Leaf (optional)</h3>
-        <p class="photo-note">The photo is for record and reference purposes. For an accurate match, also select the crop and symptoms below.</p>
+        <h3>📷 Option 1 — Diagnose from Image</h3>
+        <p class="photo-note">Upload a clear photo of the affected leaf or plant, or take one with your camera. AgriGuard will automatically analyze the image using its AI model. Crop and symptoms are not required for image diagnosis.</p>
 
         <div class="photo-actions">
             <button type="button" class="action-btn secondary" id="pd-upload-btn">🖼️ Upload Photo</button>
@@ -1028,10 +1028,16 @@ footer{
                 <button type="button" class="photo-remove" id="pd-remove-btn" aria-label="Remove photo">✕</button>
             </div>
             <p class="photo-meta" id="pd-photo-meta"></p>
+            <p id="pd-ai-status" style="margin:10px 0 0;font-size:13px;color:#4f6b52;">
+                Select an image to start AI disease analysis automatically.
+            </p>
         </div>
     </div>
 
-    <!-- ===== SYMPTOM FORM ===== -->
+    <!-- ===== SYMPTOM FALLBACK ===== -->
+    <div style="text-align:center;margin:24px auto 12px;font-weight:800;color:#2c4a2e;font-size:15px;">
+        OR — No Image? Diagnose from Symptoms
+    </div>
     <div class="tool-box">
         <div class="field-grid">
             <div class="field">
@@ -1056,9 +1062,9 @@ footer{
             <label class="symptom-check"><input type="checkbox" value="10"> Black spots on leaves and leaf drop</label>
         </div>
 
-        <button class="action-btn" onclick="predictDisease()">Check Possible Disease</button>
+        <button class="action-btn" onclick="predictDisease()">🔎 Check Disease from Symptoms</button>
 
-        <div class="result-box" id="pd-result">
+        <div class="result-box" id="pd-result" aria-live="polite">
             <h4 id="pd-title"></h4>
             <p id="pd-confidence"></p>
             <p id="pd-desc"></p>
@@ -1451,6 +1457,16 @@ async function runAgriGuardPhotoAI() {
     }
 
     if (agriGuardAIStatus !== "ready") {
+        const aiStatus = document.getElementById("pd-ai-status");
+
+        if (aiStatus) {
+            aiStatus.textContent =
+                agriGuardAIStatus === "loading"
+                    ? "AI model is loading — your image will be analyzed automatically."
+                    : "AI model is not available. You can use the symptom-based option below.";
+            aiStatus.style.color = "#7a5a00";
+        }
+
         console.warn(
             "AgriGuard AI: model is not ready.",
             agriGuardAIStatus
@@ -1462,6 +1478,12 @@ async function runAgriGuardPhotoAI() {
         const result = await predictAgriGuardImage(preview);
 
         console.log("AgriGuard AI prediction:", result);
+
+        const aiStatus = document.getElementById("pd-ai-status");
+        if (aiStatus) {
+            aiStatus.textContent = "✓ Image analyzed — AI disease prediction is ready.";
+            aiStatus.style.color = "#2e6b35";
+        }
 
         const resultBox = document.getElementById("pd-result");
         const title = document.getElementById("pd-title");
@@ -1553,6 +1575,14 @@ async function runAgriGuardPhotoAI() {
         return result;
 
     } catch (error) {
+        const aiStatus = document.getElementById("pd-ai-status");
+
+        if (aiStatus) {
+            aiStatus.textContent =
+                "Image analysis could not be completed. You can use the symptom-based option below.";
+            aiStatus.style.color = "#9a3d2f";
+        }
+
         console.error(
             "AgriGuard AI image prediction failed:",
             error
